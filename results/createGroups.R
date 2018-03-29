@@ -177,11 +177,15 @@ summary(controls)
 
 assert(sum(patients$eid %in% controls$eid) == 0)
 
-# save(controls, patients, file = file.path(PATH, 'groups.RData'))
+subjects = rbind(controls, patients)
+subjects$group = as.factor(c(rep("control", N/2),rep("patient", N/2)))
+subjects=subjects[order(subjects$eid),]
+
+#save(subjects, file = file.path(PATH, 'groups.RData'))
 
 ## Load groups and demographic descriptives 
 PATH = '~/ukbiobank'
 load(file.path(PATH, 'groups.RData'))
 
-summary(patients)
-summary(controls)
+# write subjetd eid file
+write(as.character(subjects$eid), file='~/Drive/UKBB-MH/results/subjectsN158.txt', ncolumns = 1)
