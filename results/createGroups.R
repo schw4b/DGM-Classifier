@@ -188,4 +188,21 @@ PATH = '~/ukbiobank'
 load(file.path(PATH, 'groups.RData'))
 
 # write subjetd eid file
-write(as.character(subjects$eid), file='~/Drive/UKBB-MH/results/subjectsN158.txt', ncolumns = 1)
+# write(as.character(subjects$eid), file='~/Drive/UKBB-MH/results/subjectsN158.txt', ncolumns = 1)
+
+# check if fMRI data available, run this on j00
+N=nrow(subjects)
+PATH_FMRI='/vols/Data/ukbiobank/FMRIB/IMAGING/data3/SubjectsAll'
+hasfMRI = rep(NA, N)
+for (i in 1:N) {  
+  hasfMRI[i] = file.exists(file.path(PATH_FMRI, subjects$eid[i], 'fMRI/rfMRI.ica/reg_standard/filtered_func_data_clean.nii.gz'))
+}
+
+subjects$hasfMRI = hasfMRI
+# save(subjects, file = file.path(PATH, 'groups.RData'))
+
+# check 
+sum(subjects$hasfMRI[subjects$group == 'control'])
+sum(subjects$hasfMRI[subjects$group == 'patient'])
+
+summary(subjects)
