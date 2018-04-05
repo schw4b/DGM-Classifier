@@ -24,7 +24,7 @@ NR=$(echo $(sed "${SGE_TASK_ID}q;d" ${PATH_PROJ}/results/table_${INFO}.txt) | aw
 ROI=$(echo $(sed "${SGE_TASK_ID}q;d" ${PATH_PROJ}/results/table_${INFO}.txt) | awk '{ print $3 }')
 
 FILE="${PATH_FMRI}/${MYID}/fMRI/rfMRI.ica/reg_standard/filtered_func_data_clean.nii.gz"
-OUT="${HOME}/Drive/results/${INFO}/${MYID}_$(printf '%02d' ${NR})_${INFO}.txt"
+OUT="${HOME}/Drive/results/${INFO}/${MYID}_$(printf '%03d' ${NR})_${INFO}.txt"
 
 if [[ -e "${FILE}" && ! -e "${OUT}" ]] ; then
     fslmeants -i ${FILE} -m ${PATH_ATLAS}/${ROI} -o ${OUT}
