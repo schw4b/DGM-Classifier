@@ -21,3 +21,10 @@ cat header.tab lines/* > ukbiobank.tab
 # Manually replace Builders Merchant\"s with Builders Merchant\'s
 
 # See UKBB-MH.R for further processing
+
+# rename flles: leading digit for node numbers: _99_ to _099_
+# eg 1234567_99_rois104.txt 1234567_099_rois104.txt
+for file in `ls *.txt`; do echo $file `echo $file|sed  -r 's/([0-9]{7})_([0-9]{2})_(rois104)/\1_0\2_\3/'` ; done
+
+
+
