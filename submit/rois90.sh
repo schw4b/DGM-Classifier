@@ -4,7 +4,7 @@
 #$ -q veryshort.q
 #$ -l h_vmem=4G
 #$ -l h_rt=00:05:00
-#$ -t 1:200
+#$ -t 1:2
 #$ -cwd
 #$ -o $HOME/log
 #$ -e $HOME/log
@@ -14,9 +14,9 @@
 # source ${FSLDIR}/etc/fslconf/fsl.sh
 
 INFO="rois90"
-PATH_FMRI="/vols/Data/ukbiobank/FMRIB/IMAGING/data3/subjects"
+PATH_FMRI="/vols/Data/ukbiobank/FMRIB/IMAGING/data3/SubjectsAll"
 PATH_ATLAS="${HOME}/Drive/atlas/Shirer"
-PATH_PROJ="${HOME}/Drive/DGM-Classifier"
+PATH_PROJ="${HOME}/Drive/UKBB-MH"
 LOG="${PATH_PROJ}/log/roi90.log"
 
 ID=$(echo $(sed "${SGE_TASK_ID}q;d" ${PATH_PROJ}/table_${INFO}.txt) | awk '{ print $1 }')
