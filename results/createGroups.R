@@ -118,7 +118,7 @@ for (i in 1:N) {
      # has anxiety F40 or F41
      hasAnxietyDiag[i]=any(grepl('^F40|^F41', icd$code))
      hasMentalDiag[i]=any(grepl('^F', icd$code))
-     hasOtherMentalDiag[i]=any(grepl('^F[4][2-9]|^F[^4]', icd$code)) # match any F but not F40* or F41*
+     hasOtherMentalDiag[i]=any(grepl('^F[4][2-9]|^F[^4]', icd$code)) # match any F with no F4* but still match F42 to F49
      hasNeuroDiag[i]=any(grepl('^G', icd$code))
      hasHeadInjury[i]=any(grepl('^S0', icd$code))
    }
@@ -181,11 +181,11 @@ subjects = rbind(controls, patients)
 subjects$group = as.factor(c(rep("control", N/2),rep("patient", N/2)))
 subjects=subjects[order(subjects$eid),]
 
-#save(subjects, file = file.path(PATH, 'groups.RData'))
+#save(subjects, file = file.path(PATH, 'UKBB-MH.RData'))
 
 ## Load groups and demographic descriptives 
 PATH = '~/ukbiobank'
-load(file.path(PATH, 'groups.RData'))
+load(file.path(PATH, 'UKBB-MH.RData'))
 
 # write subjetd eid file
 # write(as.character(subjects$eid), file='~/Drive/UKBB-MH/results/subjectsN158.txt', ncolumns = 1)
@@ -199,7 +199,7 @@ for (i in 1:N) {
 }
 
 subjects$hasfMRI = hasfMRI
-# save(subjects, file = file.path(PATH, 'groups.RData'))
+# save(subjects, file = file.path(PATH, 'UKBB-MH.RData'))
 
 # check 
 sum(subjects$hasfMRI[subjects$group == 'control'])
