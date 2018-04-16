@@ -1,0 +1,318 @@
+---
+title: "UKBB-MH"
+author: "Simon Schwab"
+date: "13 Apr 2018"
+output: html_notebook
+---
+
+## Libraries
+```{r}
+library(ggplot2)
+library(DGM)
+library(reshape2)
+library(cowplot)
+library(ppcor)
+```
+
+## Variables
+```{r}
+N=135
+Nt=490
+TR=2
+Nn14=14
+PATH_HOME = '/home/simon'
+PATH_PROJ = file.path(PATH_HOME, 'Data', 'UKBB-MH') # Project path
+PATH_RESULTS = file.path(PATH_PROJ, 'results')
+PATH_FIGS = file.path(PATH_PROJ, 'figures')
+PATH_UKBB = file.path(PATH_HOME, 'Drive', 'ukbiobank')
+
+FSLEYES = file.path(PATH_HOME, 'opt', 'FSLeyes', 'fsleyes')
+
+ATLAS_SHIRER = file.path(PATH_HOME, 'Drive', 'atlas', 'Shirer')
+PATH_NET = file.path(PATH_HOME, 'Drive', 'DGM_rois104')
+PATH_TS = file.path(PATH_HOME, 'Drive', 'rois104_concat')
+```
+
+## Load subject info
+```{r}
+load(file = file.path(PATH_UKBB, 'UKBB-MH.RData'))
+mydata=subset(subjects, subset = subjects$hasfMRI)
+is.ctrl = mydata$group == 'control'
+is.pati = mydata$group == 'patient'
+```
+
+## Export to BASH
+```{r}
+Sys.setenv(PATH_PROJ = PATH_PROJ)
+Sys.setenv(FSLEYES=FSLEYES, ATLAS_SHIRER=ATLAS_SHIRER)
+Sys.setenv(PATH_NET = PATH_NET)
+```
+
+## Create Subject IDs from network data
+```{bash eval=FALSE, include=FALSE}
+cd ${PATH_NET}
+ls *.txt | awk -F "_" '{ print $1 }'| uniq > ${PATH_PROJ}/results/subj_N18.txt
+```
+
+## Variable file for bash
+```{r}
+f=file(file.path(PATH_PROJ,"export.var"))
+writeLines(c('export BRAIN1mm=/usr/share/fsl/5.0/data/standard/MNI152_T1_1mm.nii.gz',
+             'export BRAIN2mm=/usr/share/fsl/5.0/data/standard/MNI152_T1_2mm.nii.gz'
+             ), f)
+close(f)
+```
+
+## Prepare atlas files for fsleyes
+```{bash eval=FALSE, include=FALSE}
+source /etc/fsl/fsl.sh
+source $PATH_PROJ/export.var
+cd $ATLAS_SHIRER
+#find * -type f -iname *.nii.gz | while read line; \
+ #do awk '{ print $line }'; done
+
+find * -type f -iname *.nii.gz | while read line; \
+  do echo $line | awk '{ print "   $ATLAS_SHIRER/" $1 " -cm color \\" }'; done
+```
+
+## FSLeyes: Load networks from Shirer atlas
+```{bash eval=FALSE, include=FALSE}
+source /etc/fsl/fsl.sh
+
+# echo $ATLAS_SHIRER
+export NO_AT_BRIDGE=1 # accessibility bus warning
+
+$FSLEYES --standard1mm $OPTS \
+   $ATLAS_SHIRER/ROIS/anterior_Salience/anterior_Salience.nii.gz -cm red -a 50 \
+   $ATLAS_SHIRER/ROIS/Auditory/Auditory.nii.gz -cm yellow -a 50 \
+   $ATLAS_SHIRER/ROIS/Basal_Ganglia/Basal_Ganglia.nii.gz -cm green -a 50 \
+   $ATLAS_SHIRER/ROIS/dorsal_DMN/dDMN.nii.gz -cm blue -a 50 \
+   $ATLAS_SHIRER/ROIS/high_Visual/high_Visual.nii.gz -cm copper -a 50 \
+   $ATLAS_SHIRER/ROIS/Language/Language.nii.gz -cm red -a 50 \
+   $ATLAS_SHIRER/ROIS/LECN/LECN.nii.gz -cm yellow -a 50 \
+   $ATLAS_SHIRER/ROIS/post_Salience/post_Salience.nii.gz -cm green -a 50 \
+   $ATLAS_SHIRER/ROIS/Precuneus/Precuneus.nii.gz -cm blue -a 50 \
+   $ATLAS_SHIRER/ROIS/prim_Visual/prim_Visual.nii.gz -cm copper -a 50 \
+   $ATLAS_SHIRER/ROIS/RECN/RECN.nii.gz -cm red -a 50 \
+   $ATLAS_SHIRER/ROIS/Sensorimotor/Sensorimotor.nii.gz -cm yellow -a 50 \
+   $ATLAS_SHIRER/ROIS/ventral_DMN/vDMN.nii.gz -cm green -a 50 \
+   $ATLAS_SHIRER/ROIS/Visuospatial/Visuospatial.nii.gz -cm blue -a 50 \
+```
+
+## Renaming ROIs sequentally 1:Nn
+## Do we need this????
+```{bash eval=FALSE, include=FALSE}
+source /etc/fsl/fsl.sh
+source $R_PATH_PROJ/export.var
+
+cd $ATLAS_SHIRER
+mkdir -p concat
+c=1
+find * -type f -name *.nii | sort | while read line; \
+   # do echo $line; done
+   do fslmaths $line -mul $c $(printf 'concat/%02d.nii' $c); c=$((c+1)); done
+```
+
+## Load time series data
+```{r}
+f = list.files(PATH_TS, "*Nn14*.txt")
+# read data
+ts = array(NA, dim=c(Nt, Nn14, N))
+for (s in 1:N) {
+  d = as.matrix(read.table(file.path(PATH_TS, f[s]), header = T))
+  #d = scaleTs(as.matrix(read.table(file.path(PATH_TS, f[s]))))
+  ts[,,s] = d[1:Nt,] # some subjects have more volumes
+}
+
+# save data container if this gets too large
+```
+
+## Plot example timeseries
+```{r, fig.height=10, fig.width=10}
+# random sampling of subject s
+s = sample(N, 10)
+n = sample(Nn14, 5)
+
+p = list()
+c = 1
+for (i in s) {
+  d = scaleTs(ts[,n,i])
+  colnames(d)=n
+  d_ = melt(d)
+  d_$Var2=as.factor(d_$Var2)
+  p[[c]] = ggplot(d_, aes(x = Var1, y = value, group=Var2, color=Var2)) + 
+    geom_line() + theme_minimal() + ggtitle(f[i])
+  c = c + 1
+}
+
+plot_grid(plotlist = p, ncol = 2, nrow = 5, rel_widths = c(1, 1))
+```
+
+## Correlation matrix
+```{r}
+R = array(NA, dim=c(Nn14, Nn14, N))
+PR = array(NA, dim=c(Nn14, Nn14, N))
+for (s in 1:N) {
+  R[,,s]=cor(ts[,,s])
+  
+  tmp = pcor(ts[,,s])
+  PR[,,s] = tmp$estimate
+}
+
+R.mean.ctrl = apply(R[,,is.ctrl], c(1,2), mean)
+R.mean.pati = apply(R[,,is.pati], c(1,2), mean)
+
+PR.mean.ctrl = apply(PR[,,is.ctrl], c(1,2), mean)
+PR.mean.pati = apply(PR[,,is.pati], c(1,2), mean)
+```
+
+## Prepare Labels
+```{r}
+mylabels=data.frame(name14=labels$Nn14)
+mylabels$abb14=c('aSal','Aud','BaG', 'dDMN', 'hVis', 'Lang', 'LECN', 'pSal', 'Pre', 'pVis', 'RECN', 'SenMot', 'vDMN', 'VisSpat')
+mylabels
+```
+
+
+### Plot
+```{r fig.height=6, fig.width=6.8, message=FALSE}
+p1  = gplotMat(R.mean.ctrl, lim=c(-1, 1), gradient = c("blue", "white", "red"), title = "controls", 
+               nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+p2  = gplotMat(R.mean.pati, lim=c(-1, 1), gradient = c("blue", "white", "red"), title = "patients",
+               nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+
+p3 = gplotMat(PR.mean.ctrl, lim=c(-1, 1), gradient = c("blue", "white", "red"), title = "controls",
+              nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+p4 = gplotMat(PR.mean.pati, lim=c(-1, 1), gradient = c("blue", "white", "red") , title = "patients",
+              nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+
+plot_grid(p1, p2, p3, p4, ncol = 2, nrow = 2, rel_widths = c(1, 1), labels = c("A", "", "B"))
+ggsave(path = PATH_FIGS, "corr.png")
+```
+
+### Summary stats
+```{r}
+summary(rmdiag(R))
+summary(rmdiag(PR))
+```
+
+## Load DGM networks
+```{r}
+# subj=list()
+# for (s in 1:N) {
+#   print(sprintf("Loading Subject %03d", s))
+#   subj[[s]] = read.subject(path=PATH_NET, id=sprintf("%s_Nn14", mydata$eid[s]), Nn14)
+# }
+# dgm.rois14.ctrl=dgm.group(subj[is.ctrl])
+# dgm.rois14.pati=dgm.group(subj[is.pati])
+# 
+# f=file(file.path(PATH_RESULTS, "DGM-rois14.RData"))
+# save(dgm.rois14.ctrl, dgm.rois14.pati, file = f, compress = T)
+# close(f)
+
+load(file.path(PATH_RESULTS, 'DGM-rois14.RData'))
+```
+
+### Check DF directly from raw data
+```{r eval=FALSE, include=FALSE}
+mydf = array(NA, dim=c(N,Nn14))
+
+for (s in 1:N) {
+  print(sprintf("Loading Subject %03d", s))
+  mydf[s,] = diag.delta(path=PATH_NET, id=sprintf("%s",mydata$eid[s]), nodes = Nn14)
+}
+```
+
+### Discount factor
+```{r fig.height=2, fig.width=7}
+set.seed(1980) # because jitter will always create a slightly different image
+p1 = ggplot(melt(dgm.rois14.ctrl$df_), aes(x=as.factor(Var2), y=value)) +
+  geom_point(shape=1, color="gray50", size=1, position = position_jitter(width = NULL, height = 0.01)) +
+  geom_boxplot(width=0.6) +
+  ggtitle(sprintf("controls", N)) + ylab("df") + xlab("node")
+
+p2 = ggplot(melt(dgm.rois14.pati$df_), aes(x=as.factor(Var2), y=value)) +
+  geom_point(shape=1, color="gray50", size=1, position = position_jitter(width = NULL, height = 0.01)) +
+  geom_boxplot(width=0.6) +
+  ggtitle(sprintf("patients", N)) + ylab("df") + xlab("node")
+
+plot_grid(p1, p2, ncol = 2, nrow = 1)
+```
+
+```{r, fig.height=5.2, fig.width=6.5}
+summary(colMeans(dgm.rois14.ctrl$df_))
+summary(colMeans(dgm.rois14.pati$df_))
+```
+
+
+## Stats
+```{r}
+stats.rois14.ctrl = binom.nettest(dgm.rois14.ctrl$am, alter = "greater", fdr = 0.01)
+stats.rois14.pati = binom.nettest(dgm.rois14.pati$am, alter = "greater", fdr = 0.01)
+```
+
+## Correspondece of DGM to correlations
+```{r}
+S.dgm = array(NA, dim=c(Nn,Nn,N))
+S.r   = array(NA, dim=c(Nn,Nn,N))
+S.pr  = array(NA, dim=c(Nn,Nn,N))
+overlap = rep(NA, N)
+for (s in 1:N) {
+  S.dgm[,,s]=dgm.rois90$am[,,s]
+  
+  b=rmdiag(PR[,,s])
+  A=cor2adj(b, sum(S.dgm[,,s]))
+  S.pr[,,s] = (A!=0)+0
+  
+  b=rmdiag(R[,,s])
+  A=cor2adj(b, sum(S.dgm[,,s]))
+  S.r[,,s] = (A!=0)+0
+  
+  overlap[s] = sum(y==a)/(Nn*Nn)
+}
+
+summary(overlap)
+#p2 = gplotMat(y, title = "Proportions", axisTextSize=9, xAngle=90, lim = mylim)
+#p1 = gplotMat(a, title = "Proportions", axisTextSize=9, xAngle=90, lim = mylim)
+#plot_grid(p1, p2, ncol = 2, nrow = 1, rel_widths = c(1, 1))
+```
+
+## Plot Network
+```{r fig.height=9, fig.width=7, message=FALSE}
+mylim = c(0, 1)
+
+p1 = gplotMat(stats.rois14.ctrl$adj, title = "controls",
+              nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+
+p2 = gplotMat(stats.rois14.pati$adj, title = "patients",
+              nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+
+p3 = gplotMat(stats.rois14.ctrl$adj_fdr, title = "controls (FDR)",
+            nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+
+p4 = gplotMat(stats.rois14.pati$adj_fdr, title = "patients (FDR)",
+            nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+
+# difference
+d=stats.rois14.ctrl$adj - stats.rois14.pati$adj
+m = (stats.rois14.ctrl$adj_fdr > 0) | (stats.rois14.pati$adj_fdr > 0)
+
+p5 = gplotMat(d, title = "controls", gradient = c("blue", "white", "red"), lim = c(-0.5, 0.5),
+              nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+
+p6 = gplotMat(d*m, title = "controls", gradient = c("blue", "white", "red"), lim = c(-0.2, 0.2),
+              nodeLabels = mylabels$abb14, xAngle = 90, axisTextSize = 9) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels$abb14)
+
+plot_grid(p1, p2, p3, p4, p5, p6, ncol = 2, nrow = 3, rel_widths = c(1, 1))
+ggsave(path = PATH_FIGS, "DGM_Nn14.png")
+```
