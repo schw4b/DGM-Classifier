@@ -188,7 +188,7 @@ PATH = '~/ukbiobank'
 load(file.path(PATH, 'UKBB-MH.RData'))
 
 # write subjetd eid file
-# write(as.character(subjects$eid), file='~/Drive/UKBB-MH/results/subjectsN158.txt', ncolumns = 1)
+write(as.character(subjects$eid), file='~/UKBB-MH/results/subjectsN158.txt', ncolumns = 1)
 
 # check if fMRI data available, run this on j00
 N=nrow(subjects)
