@@ -8,9 +8,9 @@ library(data.table)
 PATH_TS  = '~/Drive/rois104_concat'
 PATH_RES = '~/Drive/DGM_rois104'
 PATH_PROJ= '~/UKBB-MH'
-INFO     = 'DMN'
+INFO     = 'Salience'
 
-COUNT=2000
+COUNT=0
 
 # variables ----
 N  = 135
