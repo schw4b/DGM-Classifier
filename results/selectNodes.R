@@ -1,4 +1,4 @@
-# select network nodes from the extracted time series
+# Select network nodes from the extracted time series
 # by Simon Schwab
 
 library(testit)
@@ -26,17 +26,15 @@ for (s in 1:N) {
 d.rois = read.table(file = file.path(PATH_PROJ, 'results', 'roi104_order.txt'))
 
 # regular expressions to define nodes
-idx_Nn14 = grepl(pattern = 'nii.gz$', d.rois$V2)
-idx_Nn66 = grepl(pattern = '\\<(anterior_Salience|Basal_Ganglia|dorsal_DMN|Language|LECN|post_Salience|Precuneus|RECN|ventral_DMN)\\>/[0-9][0-9]/([0-9]|[0-9][0-9]).nii$', d.rois$V2)
+idx_RSN = grepl(pattern = 'nii.gz$', d.rois$V2)
+#idx_Nn66 = grepl(pattern = '\\<(anterior_Salience|Basal_Ganglia|dorsal_DMN|Language|LECN|post_Salience|Precuneus|RECN|ventral_DMN)\\>/[0-9][0-9]/([0-9]|[0-9][0-9]).nii$', d.rois$V2)
 idx_DMN = grepl(pattern = '\\<(dorsal_DMN|ventral_DMN)\\>/[0-9][0-9]/([0-9]|[0-9][0-9]).nii$', d.rois$V2)
 idx_Salience = grepl(pattern = '\\<(anterior_Salience|post_Salience)\\>/[0-9][0-9]/([0-9]|[0-9][0-9]).nii$', d.rois$V2)
 
 d.rois$V2[idx_Salience] # check
 
 labels=list()
-labels$Nn14 = d.rois$V2[idx_Nn14]
-labels$Nn66 = d.rois$V2[idx_Nn66]
-labels=list()
+labels$RSN = d.rois$V2[idx_RSN]
 labels$DMN = d.rois$V2[idx_DMN]
 labels$Salience = d.rois$V2[idx_Salience]
 
@@ -53,18 +51,18 @@ for (s in 1:N) {
     assert(length(f) == 104)
     
     # selecton of time series
-    f.14 = f[idx_Nn14]
-    f.66 = f[idx_Nn66]
+    f.14 = f[idx_RSN]
+    # f.66 = f[idx_Nn66]
     f.DMN = f[idx_DMN]
     f.Salience = f[idx_Salience]
     
     # concat the selected time series column wise
     m.14 = array(NA, dim=c(subjects$no_of_vols[s], 14))
-    m.66 = array(NA, dim=c(subjects$no_of_vols[s], 66))
+    # m.66 = array(NA, dim=c(subjects$no_of_vols[s], 66))
     m.DMN = array(NA, dim=c(subjects$no_of_vols[s], length(f.DMN)))
     m.Salience = array(NA, dim=c(subjects$no_of_vols[s], length(f.Salience)))
     colnames(m.14) = labels$Nn14
-    colnames(m.66) = labels$Nn66
+    # colnames(m.66) = labels$Nn66
     colnames(m.DMN) = labels$DMN
     colnames(m.Salience) = labels$Salience
     
