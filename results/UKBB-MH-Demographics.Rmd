@@ -1,0 +1,70 @@
+---
+title: "UKBB-MH-Demographics"
+author: "Simon Schwab"
+date: "12 May 2018"
+output: html_notebook
+---
+
+## Libraries
+```{r message=FALSE}
+library(ggplot2)
+library(cowplot)
+```
+
+## Variables
+```{r}
+N=135
+PATH_HOME = '/home/simon'
+PATH_PROJ = file.path(PATH_HOME, 'Data', 'UKBB-MH') # Project path
+PATH_RESULTS = file.path(PATH_PROJ, 'results')
+PATH_FIGS = file.path(PATH_PROJ, 'figures')
+PATH_UKBB = file.path(PATH_HOME, 'Drive', 'ukbiobank')
+```
+
+## Load subject info
+```{r}
+load(file = file.path(PATH_UKBB, 'UKBB-MH.RData'))
+mydata=subset(subjects, subset = subjects$hasfMRI)
+is.ctrl = mydata$group == 'control'
+is.pati = mydata$group == 'patient'
+
+ctrl = subset(mydata, subset = is.ctrl)
+pati = subset(mydata, subset = is.pati)
+```
+
+
+```{r}
+table = array(NA, dim=c(14, 2))
+colnames(table) = c("Controls", "Patients")
+rownames(table) = c("N", "gender (female/male)", "mean age (SD)",
+                    "F40.0", "F40.1", "F40.2", "F40.8", "F40.9",
+                    "F41.0", "F41.1", "F41.2", "F41.3", "F41.8", "F41.9")
+
+table[1,] = c(nrow(ctrl), nrow(pati))
+table[2,] = c(sprintf('%d/%d', summary(ctrl$sex)[1], summary(ctrl$sex)[2]),
+             sprintf('%d/%d', summary(pati$sex)[1], summary(pati$sex)[2]))
+table[3,] = c(sprintf('%.1f (%.2f)', mean(ctrl$age2_), sd(ctrl$age2_)),
+             sprintf('%.1f (%.2f)', mean(pati$age2_), sd(pati$age2_)))
+
+table[4,] = c(sum(ctrl$F400), sum(pati$F400))
+table[5,] = c(sum(ctrl$F401), sum(pati$F401))
+table[6,] = c(sum(ctrl$F402), sum(pati$F402))
+table[7,] = c(sum(ctrl$F408), sum(pati$F408))
+table[8,] = c(sum(ctrl$F409), sum(pati$F409))
+
+table[9,] = c(sum(ctrl$F410), sum(pati$F410))
+table[10,] = c(sum(ctrl$F411), sum(pati$F411))
+table[11,] = c(sum(ctrl$F412), sum(pati$F412))
+table[12,] = c(sum(ctrl$F413), sum(pati$F413))
+table[13,] = c(sum(ctrl$F418), sum(pati$F418))
+table[14,] = c(sum(ctrl$F419), sum(pati$F419))
+
+print(table)
+```
+
+
+
+
+
+
+
