@@ -1,0 +1,430 @@
+---
+title: "UKBB-MH-RSN"
+author: "Simon Schwab"
+date: "13 May 2018"
+output: html_notebook
+---
+
+## Install required packages
+```{r}
+# install.packages("rmarkdown")
+# install.packages("DGM")
+# install.packages("cowplot")
+# install.packages("ppcor")
+```
+
+## Libraries
+```{r message=FALSE}
+library(ggplot2)
+library(DGM)
+library(reshape2)
+library(cowplot)
+library(ppcor)
+```
+
+## Variables
+```{r}
+INFO = 'Nn14'
+N=135
+Nt=490
+TR=2
+Nn=14
+PATH_HOME = '/home/simon'
+PATH_PROJ = file.path(PATH_HOME, 'Data', 'UKBB-MH') # Project path
+PATH_RESULTS = file.path(PATH_PROJ, 'results')
+PATH_FIGS = file.path(PATH_PROJ, 'figures')
+PATH_UKBB = file.path(PATH_HOME, 'Drive', 'ukbiobank')
+
+PATH_NET = file.path(PATH_HOME, 'Drive', 'DGM_rois104')
+PATH_TS = file.path(PATH_HOME, 'Drive', 'rois104_concat')
+
+FSLEYES = '/usr/bin/fsleyes'
+ATLAS_SHIRER = file.path(PATH_HOME, 'Drive', 'atlas', 'Shirer')
+Sys.setenv(FSLEYES=FSLEYES, ATLAS_SHIRER=ATLAS_SHIRER)
+```
+
+## Load subject info
+```{r}
+load(file = file.path(PATH_UKBB, 'UKBB-MH.RData'))
+mydata=subset(subjects, subset = subjects$hasfMRI)
+is.ctrl = mydata$group == 'control'
+is.pati = mydata$group == 'patient'
+```
+
+## Prepare Labels
+```{r}
+# Check in Shirer paper suppl material
+mylabels=c('aSal','Aud', 'BasG', 'dDMN', 'hiVis', 'Lang', 'LECN', 'pSal', 'Prec',
+                 'primVis', 'RECN', 'SensMot', 'vDMN', 'VisSpat')
+```
+
+## FSLeyes: show nodes
+```{bash eval=FALSE, include=FALSE}
+source /etc/fsl/fsl.sh
+
+# echo $ATLAS_SHIRER
+export NO_AT_BRIDGE=1 # accessibility bus warning
+
+echo $FSLEYES
+
+$FSLEYES --standard1mm $OPTS \
+   $ATLAS_SHIRER/dorsal_DMN/01/1.nii -cm red -a 50 \
+   $ATLAS_SHIRER/dorsal_DMN/02/2.nii -cm yellow -a 50 \
+   $ATLAS_SHIRER/dorsal_DMN/03/3.nii -cm green -a 50 \
+   $ATLAS_SHIRER/dorsal_DMN/04/4.nii -cm blue -a 50 \
+   $ATLAS_SHIRER/dorsal_DMN/05/5.nii -cm copper -a 50 \
+   $ATLAS_SHIRER/dorsal_DMN/06/6.nii -cm red -a 50 \
+   $ATLAS_SHIRER/dorsal_DMN/07/7.nii -cm green -a 50 \
+   $ATLAS_SHIRER/dorsal_DMN/08/8.nii -cm blue -a 50 \
+   $ATLAS_SHIRER/dorsal_DMN/09/9.nii -cm copper -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/01/1.nii -cm red -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/02/2.nii -cm yellow -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/03/3.nii -cm green -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/04/4.nii -cm blue -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/05/5.nii -cm copper -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/06/6.nii -cm red -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/07/7.nii -cm green -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/08/8.nii -cm blue -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/09/9.nii -cm copper -a 50 \
+   $ATLAS_SHIRER/ventral_DMN/10/10.nii -cm red -a 50 \
+```
+
+## Load time series data
+```{r}
+f = list.files(PATH_TS, sprintf('*%s*.txt', INFO))
+# read data
+ts = array(NA, dim=c(Nt, Nn, N))
+for (s in 1:N) {
+  d = as.matrix(read.table(file.path(PATH_TS, f[s]), header = T))
+  ts[,,s] = scaleTs(d[1:Nt,]) # some subjects have more volumes
+}
+```
+
+## Plot example time series
+```{r, fig.height=3, fig.width=8}
+set.seed(1980)
+s = sample(N, 4)
+n = sample(Nn, 3)
+idx=1:100
+
+p = list()
+c = 1
+for (i in s) {
+  d = ts[,n,i]
+  colnames(d)=mylabels[n]
+  d_ = melt(d[idx,])
+  d_$Var2=as.factor(d_$Var2)
+  p[[c]] = ggplot(d_, aes(x = Var1, y = value, group=Var2, color=Var2)) + 
+    geom_line() + theme_minimal() + ggtitle(f[i])
+  c = c + 1
+}
+
+plot_grid(plotlist = p, ncol = 2, nrow = 2, rel_widths = c(1, 1))
+```
+
+## Load DGM networks
+```{r eval=FALSE, include=FALSE}
+subj=list()
+for (s in 1:N) {
+  print(sprintf("Loading Subject %03d", s))
+  subj[[s]] = read.subject(path=PATH_NET, id=sprintf("%s_%s", mydata$eid[s], INFO), Nn, modelStore = F)
+}
+dgm.ctrl=dgm.group(subj[is.ctrl])
+dgm.pati=dgm.group(subj[is.pati])
+
+save(dgm.ctrl, dgm.pati, file = file.path(PATH_RESULTS, sprintf('DGM-%s.RData', INFO)), compress = T)
+```
+### Load from RData
+```{r}
+load(file.path(PATH_RESULTS, sprintf('DGM-%s.RData', INFO)))
+```
+
+## Discount factor
+```{r fig.height=2, fig.width=7}
+set.seed(1980) # because jitter will always create a slightly different image
+p1 = ggplot(melt(dgm.ctrl$df_), aes(x=as.factor(Var2), y=value)) +
+  geom_point(shape=1, color="gray50", size=1, position = position_jitter(width = NULL, height = 0.01)) +
+  geom_boxplot(width=0.6) + theme(axis.text = element_text(size=8)) +
+  ggtitle(sprintf("controls", N)) + ylab("df") + xlab("node")
+
+p2 = ggplot(melt(dgm.pati$df_), aes(x=as.factor(Var2), y=value)) +
+  geom_point(shape=1, color="gray50", size=1, position = position_jitter(width = NULL, height = 0.01)) +
+  geom_boxplot(width=0.6) + theme(axis.text = element_text(size=8)) +
+  ggtitle(sprintf("patients", N)) + ylab("df") + xlab("node")
+
+plot_grid(p1, p2, ncol = 2, nrow = 1)
+```
+### DF Summary stats
+```{r, fig.height=5.2, fig.width=6.5}
+x=rbind(summary(c(dgm.ctrl$df_)),
+        summary(c(dgm.pati$df_)))
+rownames(x)=c("controls", "patients")
+print(x)
+```
+### Proportion of totally stationary networks (df = 1)
+```{r}
+x = array(NA, dim = c(1,2))
+x[1,] = c(sum(dgm.ctrl$df_==1) / (sum(is.ctrl)*Nn),
+          sum(dgm.pati$df_==1) / (sum(is.pati)*Nn))
+colnames(x) = c("controls", "patients")
+print(x)
+```
+
+## Stats Binomial test
+```{r}
+stats.ctrl = binom.nettest(dgm.ctrl$am, alter = "greater", fdr = 0.01)
+stats.pati = binom.nettest(dgm.pati$am, alter = "greater", fdr = 0.01)
+
+x1 = apply(dgm.pati$am, c(1,2), sum)
+x2 = apply(dgm.ctrl$am, c(1,2), sum)
+
+# x1[3,11] = x1[3,11] - (x1[3,11] - 0) # test sensitivity 
+
+stats.prop = prop.nettest(x1 = x1,
+                          n1 = sum(is.pati),
+                          x2 = x2,
+                          n2 = sum(is.ctrl),
+                          fdr = 0.05, alpha = 0.01)
+```
+
+## Plot Network
+```{r fig.height=6, fig.width=7, message=FALSE}
+p1 = gplotMat(stats.ctrl$adj, title = "controls", barWidth = 0.3,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+p2 = gplotMat(stats.pati$adj, title = "patients", barWidth = 0.3,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+# get scaling for z values
+lim = max(max(c(stats.prop$z), na.rm = T), abs(min(c(stats.prop$z), na.rm = T)))
+
+p3 = gplotMat(stats.prop$z_uncorr, title = "patients-controls (uc.)",
+              gradient = c("blue", "white", "red"), lim = c(-lim, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8,  barWidth = 0.3) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+p4 = gplotMat(stats.prop$z_fdr, title = "patients-controls (FDR)",
+              gradient = c("blue", "white", "red"), lim = c(-lim, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8,  barWidth = 0.3) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+plot_grid(p1, p2, p3, p4, ncol = 2, nrow = 2, rel_widths = c(1, 1))
+ggsave(path = PATH_FIGS, sprintf('DGM_%s-Proportions.png', INFO))
+```
+
+## Group network
+### Load model evidence ME subjets x models per node
+```{r eval=FALSE, include=FALSE}
+ME.sum.all  = array(NA, dim=c(Nn, 2^(Nn-1)))
+ME.sum.pati = array(NA, dim=c(Nn, 2^(Nn-1)))
+ME.sum.ctrl = array(NA, dim=c(Nn, 2^(Nn-1)))
+for (n in 1:Nn) {
+  print(sprintf("========= Node %03d =========", n))
+  ME = array(NA, dim=c(N, 2^(Nn-1)))
+  for (s in 1:N) {
+    # print(sprintf("Loading Subject %03d", s))
+    file=file.path(PATH_NET, sprintf("%s_%s_node_%03d.txt", mydata$eid[s], INFO, n))
+    ME[s,]=scan(file, skip = Nn, nlines = 1) # faster than fread
+  }
+  # save(file = file.path(PATH_PROJ, 'ME', sprintf("node_%03d.RData", n)), ME)
+  ME.sum.all[n,]  = colSums(ME)
+  ME.sum.pati[n,] = colSums(ME[is.pati,])
+  ME.sum.ctrl[n,] = colSums(ME[is.ctrl,])
+}
+
+save(ME.sum.all, ME.sum.pati, ME.sum.ctrl, file = file.path(PATH_RESULTS, sprintf('ME_sum-%s.RData', INFO)))
+```
+
+### Maximize model evidence and create group networks
+```{r}
+load(file.path(PATH_RESULTS, sprintf('ME_sum-%s.RData', INFO)))
+
+m.all = apply(ME.sum.all, 1, which.max)
+m.pati = apply(ME.sum.pati, 1, which.max)
+m.ctrl = apply(ME.sum.ctrl, 1, which.max)
+
+# get parent models
+AM.all = array(0, dim=c(Nn, Nn)) # AM is adjacency matrix
+AM.pati = array(0, dim=c(Nn, Nn)) # AM is adjacency matrix
+AM.ctrl = array(0, dim=c(Nn, Nn)) # AM is adjacency matrix
+
+for (n in 1:Nn) {
+  space = model.generator(Nn, n)
+  
+  idx = space[, m.all[n]]
+  AM.all[idx, n]=1
+  
+  idx = space[, m.pati[n]]
+  AM.pati[idx, n]=1
+  
+  idx = space[, m.ctrl[n]]
+  AM.ctrl[idx, n]=1
+}
+```
+
+
+### Plot group networks
+```{r fig.height=6, fig.width=6, message=FALSE}
+p1 = gplotMat(AM.all, title = "group network", barWidth = 0.3, hasColMap = F,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+p2 = gplotMat(AM.ctrl, title = "controls", barWidth = 0.3, hasColMap = F,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+
+p3 = gplotMat(AM.pati, title = "patients", barWidth = 0.3, hasColMap = F,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+p4 = gplotMat(AM.ctrl - AM.pati, title = "controls - patients", barWidth = 0.3, hasColMap = F,
+              gradient = c("blue", "white", "red"), lim = c(-1, 1),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+plot_grid(p1, p2, p3, p4, ncol = 2, nrow = 2)
+ggsave(path = PATH_FIGS, sprintf('DGM_%s-GroupNets.png', INFO))
+```
+
+## Get deltas
+```{r eval=FALSE, include=FALSE}
+# We get deltas for the group models only
+DE=array(NA, dim=c(Nn, N))
+
+for (n in 1:Nn) {
+  print(sprintf("========= Node %03d =========", n))
+  for (s in 1:N) {
+    # print(sprintf("Loading Subject %03d", s))
+    file=file.path(PATH_NET, sprintf("%s_%s_node_%03d.txt", mydata$eid[s], INFO, n))
+    tmp=scan(file, skip = Nn+1, nlines = 1) # faster than fread
+    DE[n, s] = tmp[m.all[n]]
+  }
+}
+
+save(DE, file = file.path(PATH_RESULTS, sprintf('deltas-%s.RData', INFO)))
+```
+
+## Connectivity strengths
+### Calculate thetas
+```{r eval=FALSE, include=FALSE}
+load(file.path(PATH_RESULTS, sprintf('deltas-%s.RData', INFO)))
+
+TH=list()
+
+for (n in 1:Nn) { # nodes
+  print(sprintf("Node %03d done!", n))
+  pars = which(as.logical(AM.all[,n]))
+  theta = array(NA, dim=c(Nt, length(pars), N))
+  
+  for (s in 1:N) { # subjects
+    Ft=array(1, dim=c(Nt,length(pars)+1))
+    Ft[,2:ncol(Ft)]=ts[,pars,s] # selects parents
+    Yt=ts[,n,s]
+    
+    fit=dlm.lpl(Yt, t(Ft), delta = DE[n,s])
+    y = dlm.retro(fit$mt, fit$CSt, fit$RSt, fit$nt, fit$dt)
+    
+    theta[,,s]=t(y$smt[2:(length(pars)+1),])
+  }
+  
+  TH[[n]] = theta
+}
+
+save(TH, file = file.path(PATH_RESULTS, sprintf('thetas-%s.RData', INFO)))
+```
+
+### Create adjacency matrix with connectivity strengths 
+```{r}
+load(file.path(PATH_RESULTS,  sprintf('thetas-%s.RData', INFO)))
+
+thetas.mean = array(NA, dim=c(Nn, Nn, N))
+thetas.sd = array(NA, dim=c(Nn, Nn, N))
+
+for (n in 1:Nn) {
+  thetas.mean[,n,][as.logical(AM.all[,n]),] = apply(TH[[n]], c(2,3), mean)
+  thetas.sd[,n,][as.logical(AM.all[,n]),] = apply(TH[[n]], c(2,3), sd)
+}
+
+thetas.mean.all  = apply(thetas.mean, c(1,2), mean)
+thetas.mean.pati = apply(thetas.mean[,,is.pati], c(1,2), mean)
+thetas.mean.ctrl = apply(thetas.mean[,,is.ctrl], c(1,2), mean)
+
+thetas.sd.all  = apply(thetas.sd, c(1,2), mean)
+thetas.sd.pati = apply(thetas.sd[,,is.pati], c(1,2), mean)
+thetas.sd.ctrl = apply(thetas.sd[,,is.ctrl], c(1,2), mean)
+
+# summary(c(thetas.sd.all))
+# summary(c(thetas.sd.pati))
+# summary(c(thetas.sd.ctrl))
+```
+
+
+### Statistics on connectivity strengths
+```{r}
+stats.theta.mean=ttest.nettest(thetas.mean,mydata$group, alpha = 0.01)
+# summary(c(stats.theta.mean$t))
+
+# thetas.sd[1,2,is.pati] = thetas.sd[1,2,is.pati] + 4.7 # check sensitivity
+
+stats.theta.sd=ttest.nettest(thetas.sd,mydata$group, alpha = 0.01)
+# summary(c(stats.theta.sd$t))
+```
+
+### Plot
+```{r fig.height=12, fig.width=7, message=FALSE}
+lim=max(abs(min(c(thetas.mean.ctrl, thetas.mean.pati), na.rm = T)), 
+            max(c(thetas.mean.ctrl, thetas.mean.pati), na.rm = T))
+
+p1 = gplotMat(thetas.mean.pati, title = "Patients", barWidth = 0.3,
+              gradient = c("blue", "white", "red"), lim = c(-lim, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+    scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+p2 = gplotMat(thetas.mean.ctrl, title = "Controls", barWidth = 0.3,
+              gradient = c("blue", "white", "red"), lim = c(-lim, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+lim=max(abs(min(c(stats.theta.mean$t), na.rm = T)), max(c(stats.theta.mean$t), na.rm = T))
+
+p3 = gplotMat(stats.theta.mean$t_uncorr, title = "t-test (uc.)", barWidth = 0.3, 
+              gradient = c("blue", "white", "red"), lim = c(-lim, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+p4 = gplotMat(stats.theta.mean$t_fdr, title = "t-test (FDR)", barWidth = 0.3, 
+              gradient = c("blue", "white", "red"), lim = c(-lim, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+lim=max(abs(min(c(thetas.sd.ctrl, thetas.sd.pati), na.rm = T)),
+        max(c(thetas.sd.ctrl, thetas.sd.pati), na.rm = T))
+
+p5 = gplotMat(thetas.sd.pati, title = "Patients", barWidth = 0.3, lim = c(0, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+p6 = gplotMat(thetas.sd.ctrl, title = "Controls", barWidth = 0.3, lim = c(0, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+lim=max(abs(min(c(stats.theta.sd$t), na.rm = T)), max(c(stats.theta.sd$t), na.rm = T))
+
+p7 = gplotMat(stats.theta.sd$t_uncorr, title = "t-test (uc.)", barWidth = 0.3, 
+              gradient = c("blue", "white", "red"), lim = c(-lim, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+p8 = gplotMat(stats.theta.sd$t_fdr, title = "t-test (FDR)", barWidth = 0.3, 
+              gradient = c("blue", "white", "red"), lim = c(-lim, lim),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+
+plot_grid(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2, nrow = 4)
+ggsave(path = PATH_FIGS, sprintf('DGM_%s-thetas.png', INFO))
+```
+
+
