@@ -4,6 +4,9 @@ UK Biobank: Linking directed dynamic brain networks to mental health
 
 ## Notebooks with results and figures
 - [Demographics](https://rawgit.com/schw4b/UKBB-MH/master/results/UKBB-MH-Demographics.nb.html)
+- [Demographics](https://rawgit.com/schw4b/UKBB-MH/master/results/UKBB-MH-DMN.nb.html)
+- [Demographics](https://rawgit.com/schw4b/UKBB-MH/master/results/UKBB-MH-RSN.nb.html)
+- [Demographics](https://rawgit.com/schw4b/UKBB-MH/master/results/UKBB-MH-Salience.nb.html)
 
 ## Description of processing pipeline
 
