@@ -24,11 +24,11 @@ library(ppcor)
 
 ## Variables
 ```{r}
-INFO = 'Nn14'
+INFO = 'Salience'
 N=135
 Nt=490
 TR=2
-Nn=14
+Nn=19
 PATH_HOME = '/home/simon'
 PATH_PROJ = file.path(PATH_HOME, 'Data', 'UKBB-MH') # Project path
 PATH_RESULTS = file.path(PATH_PROJ, 'results')
@@ -54,8 +54,9 @@ is.pati = mydata$group == 'patient'
 ## Prepare Labels
 ```{r}
 # Check in Shirer paper suppl material
-mylabels=c('aSal','Aud', 'BasG', 'dDMN', 'hiVis', 'Lang', 'LECN', 'pSal', 'Prec',
-                 'primVis', 'RECN', 'SensMot', 'vDMN', 'VisSpat')
+mylabels=c("lmFront", "lIns", "ACC", "rmFront", "rIns", "lLobVI", "rLobVI", # anterior Salience
+           "lmFront", "lSupMa", "lPrec", "rmCing", "rsPar", "rSupMa", "lThal", "LobVI",
+           "lpIns", "rThal", "LobIV", "rpIns") # post Salience
 ```
 
 ## FSLeyes: show nodes
@@ -68,20 +69,25 @@ export NO_AT_BRIDGE=1 # accessibility bus warning
 echo $FSLEYES
 
 $FSLEYES --standard1mm $OPTS \
-   $ATLAS_SHIRER/anterior_Salience/anterior_Salience.nii.gz -cm red -a 50 \
-   $ATLAS_SHIRER/Auditory/Auditory.nii.gz -cm yellow -a 50 \
-   $ATLAS_SHIRER/Basal_Ganglia/Basal_Ganglia.nii.gz -cm green -a 50 \
-   $ATLAS_SHIRER/dorsal_DMN/dDMN.nii.gz -cm green -a 50 \
-   $ATLAS_SHIRER/high_Visual/high_Visual.nii.gz -cm blue -a 50 \
-   $ATLAS_SHIRER/Language/Language.nii.gz -cm copper -a 50 \
-   $ATLAS_SHIRER/LECN/LECN.nii.gz -cm red -a 50 \
-   $ATLAS_SHIRER/post_Salience/post_Salience.nii.gz -cm green -a 50 \
-   $ATLAS_SHIRER/Precuneus/Precuneus.nii.gz -cm blue -a 50 \
-   $ATLAS_SHIRER/prim_Visual/prim_Visual.nii.gz -cm copper -a 50 \
-   $ATLAS_SHIRER/RECN/RECN.nii.gz -cm red -a 50 \
-   $ATLAS_SHIRER/Sensorimotor/Sensorimotor.nii.gz -cm yellow -a 50 \
-   $ATLAS_SHIRER/ventral_DMN/vDMN.nii.gz -cm yellow -a 50 \
-   $ATLAS_SHIRER/Visuospatial/Visuospatial.nii.gz -cm green -a 50 \
+   $ATLAS_SHIRER/anterior_Salience/01/1.nii -cm red -a 50 \
+   $ATLAS_SHIRER/anterior_Salience/02/2.nii -cm yellow -a 50 \
+   $ATLAS_SHIRER/anterior_Salience/03/3.nii -cm green -a 50 \
+   $ATLAS_SHIRER/anterior_Salience/04/4.nii -cm blue -a 50 \
+   $ATLAS_SHIRER/anterior_Salience/05/5.nii -cm copper -a 50 \
+   $ATLAS_SHIRER/anterior_Salience/06/6.nii -cm red -a 50 \
+   $ATLAS_SHIRER/anterior_Salience/07/7.nii -cm green -a 50 \
+   $ATLAS_SHIRER/post_Salience/01/1.nii -cm blue -a 50 \
+   $ATLAS_SHIRER/post_Salience/02/2.nii -cm copper -a 50 \
+   $ATLAS_SHIRER/post_Salience/03/3.nii -cm red -a 50 \
+   $ATLAS_SHIRER/post_Salience/04/4.nii -cm yellow -a 50 \
+   $ATLAS_SHIRER/post_Salience/05/5.nii -cm green -a 50 \
+   $ATLAS_SHIRER/post_Salience/06/6.nii -cm blue -a 50 \
+   $ATLAS_SHIRER/post_Salience/07/7.nii -cm copper -a 50 \
+   $ATLAS_SHIRER/post_Salience/08/8.nii -cm red -a 50 \
+   $ATLAS_SHIRER/post_Salience/09/9.nii -cm green -a 50 \
+   $ATLAS_SHIRER/post_Salience/10/10.nii -cm blue -a 50 \
+   $ATLAS_SHIRER/post_Salience/11/11.nii -cm copper -a 50 \
+   $ATLAS_SHIRER/post_Salience/12/12.nii -cm red -a 50 \
 ```
 
 ## Load time series data
@@ -186,11 +192,11 @@ stats.prop = prop.nettest(x1 = x1,
 ```{r fig.height=6, fig.width=7, message=FALSE}
 p1 = gplotMat(stats.ctrl$adj, title = "controls", barWidth = 0.3,
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 p2 = gplotMat(stats.pati$adj, title = "patients", barWidth = 0.3,
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 # get scaling for z values
 lim = max(max(c(stats.prop$z), na.rm = T), abs(min(c(stats.prop$z), na.rm = T)))
@@ -198,12 +204,12 @@ lim = max(max(c(stats.prop$z), na.rm = T), abs(min(c(stats.prop$z), na.rm = T)))
 p3 = gplotMat(stats.prop$z_uncorr, title = "patients-controls (uc.)",
               gradient = c("blue", "white", "red"), lim = c(-lim, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8,  barWidth = 0.3) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 p4 = gplotMat(stats.prop$z_fdr, title = "patients-controls (FDR)",
               gradient = c("blue", "white", "red"), lim = c(-lim, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8,  barWidth = 0.3) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 plot_grid(p1, p2, p3, p4, ncol = 2, nrow = 2, rel_widths = c(1, 1))
 ggsave(path = PATH_FIGS, sprintf('DGM_%s-Proportions.png', INFO))
@@ -259,26 +265,25 @@ for (n in 1:Nn) {
 }
 ```
 
-
 ### Plot group networks
 ```{r fig.height=6, fig.width=6, message=FALSE}
 p1 = gplotMat(AM.all, title = "group network", barWidth = 0.3, hasColMap = F,
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 p2 = gplotMat(AM.ctrl, title = "controls", barWidth = 0.3, hasColMap = F,
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 
 p3 = gplotMat(AM.pati, title = "patients", barWidth = 0.3, hasColMap = F,
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 p4 = gplotMat(AM.ctrl - AM.pati, title = "controls - patients", barWidth = 0.3, hasColMap = F,
               gradient = c("blue", "white", "red"), lim = c(-1, 1),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 plot_grid(p1, p2, p3, p4, ncol = 2, nrow = 2)
 ggsave(path = PATH_FIGS, sprintf('DGM_%s-GroupNets.png', INFO))
@@ -376,47 +381,47 @@ lim=max(abs(min(c(thetas.mean.ctrl, thetas.mean.pati), na.rm = T)),
 p1 = gplotMat(thetas.mean.pati, title = "Patients", barWidth = 0.3,
               gradient = c("blue", "white", "red"), lim = c(-lim, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-    scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+    scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 p2 = gplotMat(thetas.mean.ctrl, title = "Controls", barWidth = 0.3,
               gradient = c("blue", "white", "red"), lim = c(-lim, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 lim=max(abs(min(c(stats.theta.mean$t), na.rm = T)), max(c(stats.theta.mean$t), na.rm = T))
 
 p3 = gplotMat(stats.theta.mean$t_uncorr, title = "t-test (uc.)", barWidth = 0.3, 
               gradient = c("blue", "white", "red"), lim = c(-lim, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 p4 = gplotMat(stats.theta.mean$t_fdr, title = "t-test (FDR)", barWidth = 0.3, 
               gradient = c("blue", "white", "red"), lim = c(-lim, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 lim=max(abs(min(c(thetas.sd.ctrl, thetas.sd.pati), na.rm = T)),
         max(c(thetas.sd.ctrl, thetas.sd.pati), na.rm = T))
 
 p5 = gplotMat(thetas.sd.pati, title = "Patients", barWidth = 0.3, lim = c(0, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 p6 = gplotMat(thetas.sd.ctrl, title = "Controls", barWidth = 0.3, lim = c(0, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 lim=max(abs(min(c(stats.theta.sd$t), na.rm = T)), max(c(stats.theta.sd$t), na.rm = T))
 
 p7 = gplotMat(stats.theta.sd$t_uncorr, title = "t-test (uc.)", barWidth = 0.3, 
               gradient = c("blue", "white", "red"), lim = c(-lim, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 p8 = gplotMat(stats.theta.sd$t_fdr, title = "t-test (FDR)", barWidth = 0.3, 
               gradient = c("blue", "white", "red"), lim = c(-lim, lim),
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
-  scale_x_continuous(breaks = 0.5:13.5, labels = mylabels)
+  scale_x_continuous(breaks = 0.5:18.5, labels = mylabels)
 
 plot_grid(p1, p2, p3, p4, p5, p6, p7, p8, ncol = 2, nrow = 4)
 ggsave(path = PATH_FIGS, sprintf('DGM_%s-thetas.png', INFO))
