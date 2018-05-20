@@ -1,0 +1,15 @@
+1 amygL  "Harvard Oxford Subcortocal" 10
+2 amygR  "Harvard Oxford Subcortocal" 20
+3 hippL  "Harvard Oxford Subcortocal"  9
+4 hippR  "Harvard Oxford Subcortocal" 19
+5 thalL   "Oxford Thalamic Connectivity Probability" 4
+6 thalR   "Oxford Thalamic Connectivity Probability" 4
+7 insL   "Yeo17"  26
+8 insR   "Yeo17"  85
+9 PFCmL  "Yeo17"  48
+10 PFCmR  "Yeo17" 106
+11 OrbFL "Yeo17"  30
+12 OrbFR "Yeo17"  89
+13 PFCmpL "Yeo17"  28
+14 PFCmpR "Yeo17"  86
+
