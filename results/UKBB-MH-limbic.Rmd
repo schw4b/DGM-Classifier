@@ -1,7 +1,7 @@
 ---
 title: "UKBB-MH-limbic"
 author: "Simon Schwab"
-date: "5 Jun 2018"
+date: "7 Jun 2018"
 output: html_notebook
 ---
 
@@ -107,6 +107,52 @@ for (i in s) {
 
 plot_grid(plotlist = p, ncol = 2, nrow = 2, rel_widths = c(1, 1))
 ```
+
+## FC
+```{r}
+FC.ctrl = corTs(ts[,,is.ctrl])
+FC.pati = corTs(ts[,,is.pati])
+FC.all = corTs(ts)
+
+# Fischer's Transform
+Z.R = rmdiag(0.5*(log(1+FC.all$R) - log(1-FC.all$R)))
+stats.FC.R   = ttest.nettest(Z.R, mydata$group, alpha = .05, perm = F, fdr = .05)
+Z.PC = rmdiag(0.5*(log(1+FC.all$PC) - log(1-FC.all$PC)))
+stats.FC.PC   = ttest.nettest(Z.PC, mydata$group, alpha = .05, perm = F, fdr = .05)
+```
+
+## Plot FC
+```{r fig.height=4.6, fig.width=8, message=FALSE}
+p1 = gplotMat(rmdiag(FC.ctrl$R_mean), title = "controls R", barWidth = 0.3,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:br, labels = mylabels)
+
+p2 = gplotMat(rmdiag(FC.pati$R_mean), title = "patients R", barWidth = 0.3,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:br, labels = mylabels)
+
+p3 = gplotMat(stats.FC.R$stat_uncorr, title = "t-test (uc.)", barWidth = 0.3, 
+              gradient = c("blue", "white", "red"), lim = c(-5, 5),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:br, labels = mylabels)
+
+p4 = gplotMat(rmdiag(FC.ctrl$PC_mean), title = "controls PC", barWidth = 0.3,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:br, labels = mylabels)
+
+p5 = gplotMat(rmdiag(FC.pati$PC_mean), title = "patients PC", barWidth = 0.3,
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:br, labels = mylabels)
+
+p6 = gplotMat(stats.FC.PC$stat_uncorr, title = "t-test (uc.)", barWidth = 0.3, 
+              gradient = c("blue", "white", "red"), lim = c(-5, 5),
+              nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
+  scale_x_continuous(breaks = 0.5:br, labels = mylabels)
+
+plot_grid(p1, p2, p3, p4, p5, p6, ncol = 3, nrow = 2, rel_widths = c(1, 1))
+ggsave(path = PATH_FIGS, sprintf('DGM_%s-FC.png', INFO))
+```
+
 
 ## Run DGM on HCP cluster
 
@@ -239,7 +285,7 @@ for (n in 1:Nn) {
 ```
 
 ### Plot group networks
-```{r fig.height=2.5, fig.width=5, message=FALSE}
+```{r fig.height=2.4, fig.width=5, message=FALSE}
 p1 = gplotMat(stats.all$adj_fdr, title = "sign. proportions", barWidth = 0.3,
               nodeLabels = mylabels, xAngle = 90, axisTextSize = 8) +
   scale_x_continuous(breaks = 0.5:br, labels = mylabels)
@@ -488,12 +534,12 @@ print(chi.stat)
 
 ## Plot some theta_t from random subjects
 ```{r fig.height=10, fig.width=5}
-n = 1 # node
-s = 3 # subjects
+n = 3 # node
+s = 1 # subject
 
 p=list()
 c = 1
-for (s in c(11:20)) {
+for (s in c(1:10)) {
   d = TH[[n]][,,s]
   colnames(d) = mylabels[AM.all_FDR[,n]==1]
   d_ = melt(d)
