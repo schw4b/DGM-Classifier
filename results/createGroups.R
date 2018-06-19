@@ -80,7 +80,42 @@ which(grepl('6138', vars.codes))
 which(grepl('20002', vars.codes))
 
 ## Medical Conditions - Non-Cancer illness code, self reported (field 20002)
-illness = cbind(my_ukb_data$noncancer_illness_code_selfreported_2_0,
+# after array 17+ there is no data
+illness = cbind(my_ukb_data$noncancer_illness_code_selfreported_0_0,
+                my_ukb_data$noncancer_illness_code_selfreported_0_1,
+                my_ukb_data$noncancer_illness_code_selfreported_0_2,
+                my_ukb_data$noncancer_illness_code_selfreported_0_3,
+                my_ukb_data$noncancer_illness_code_selfreported_0_4,
+                my_ukb_data$noncancer_illness_code_selfreported_0_5,
+                my_ukb_data$noncancer_illness_code_selfreported_0_6,
+                my_ukb_data$noncancer_illness_code_selfreported_0_7,
+                my_ukb_data$noncancer_illness_code_selfreported_0_8,
+                my_ukb_data$noncancer_illness_code_selfreported_0_9,
+                my_ukb_data$noncancer_illness_code_selfreported_0_10,
+                my_ukb_data$noncancer_illness_code_selfreported_0_11,
+                my_ukb_data$noncancer_illness_code_selfreported_0_12,
+                my_ukb_data$noncancer_illness_code_selfreported_0_13,
+                my_ukb_data$noncancer_illness_code_selfreported_0_14,
+                my_ukb_data$noncancer_illness_code_selfreported_0_15,
+                my_ukb_data$noncancer_illness_code_selfreported_0_16,
+                my_ukb_data$noncancer_illness_code_selfreported_1_0,
+                my_ukb_data$noncancer_illness_code_selfreported_1_1,
+                my_ukb_data$noncancer_illness_code_selfreported_1_2,
+                my_ukb_data$noncancer_illness_code_selfreported_1_3,
+                my_ukb_data$noncancer_illness_code_selfreported_1_4,
+                my_ukb_data$noncancer_illness_code_selfreported_1_5,
+                my_ukb_data$noncancer_illness_code_selfreported_1_6,
+                my_ukb_data$noncancer_illness_code_selfreported_1_7,
+                my_ukb_data$noncancer_illness_code_selfreported_1_8,
+                my_ukb_data$noncancer_illness_code_selfreported_1_9,
+                my_ukb_data$noncancer_illness_code_selfreported_1_10,
+                my_ukb_data$noncancer_illness_code_selfreported_1_11,
+                my_ukb_data$noncancer_illness_code_selfreported_1_12,
+                my_ukb_data$noncancer_illness_code_selfreported_1_13,
+                my_ukb_data$noncancer_illness_code_selfreported_1_14,
+                my_ukb_data$noncancer_illness_code_selfreported_1_15,
+                my_ukb_data$noncancer_illness_code_selfreported_1_16,
+                my_ukb_data$noncancer_illness_code_selfreported_2_0,
                 my_ukb_data$noncancer_illness_code_selfreported_2_1,
                 my_ukb_data$noncancer_illness_code_selfreported_2_2,
                 my_ukb_data$noncancer_illness_code_selfreported_2_3,
@@ -96,19 +131,8 @@ illness = cbind(my_ukb_data$noncancer_illness_code_selfreported_2_0,
                 my_ukb_data$noncancer_illness_code_selfreported_2_13,
                 my_ukb_data$noncancer_illness_code_selfreported_2_14,
                 my_ukb_data$noncancer_illness_code_selfreported_2_15,
-                my_ukb_data$noncancer_illness_code_selfreported_2_16,
-                my_ukb_data$noncancer_illness_code_selfreported_2_17,
-                my_ukb_data$noncancer_illness_code_selfreported_2_18,
-                my_ukb_data$noncancer_illness_code_selfreported_2_19,
-                my_ukb_data$noncancer_illness_code_selfreported_2_20,
-                my_ukb_data$noncancer_illness_code_selfreported_2_21,
-                my_ukb_data$noncancer_illness_code_selfreported_2_22,
-                my_ukb_data$noncancer_illness_code_selfreported_2_23,
-                my_ukb_data$noncancer_illness_code_selfreported_2_24,
-                my_ukb_data$noncancer_illness_code_selfreported_2_25,
-                my_ukb_data$noncancer_illness_code_selfreported_2_26,
-                my_ukb_data$noncancer_illness_code_selfreported_2_27,
-                my_ukb_data$noncancer_illness_code_selfreported_2_28)
+                my_ukb_data$noncancer_illness_code_selfreported_2_16
+)
 
 
 illness_depression  = rep(FALSE, N)
@@ -165,14 +189,6 @@ for (i in 1:length(eids)) {
 print(proc.time() - clock)
 
 #save(ICD, file=file.path(PATH, 'ICD.RData'))
-
-## Fetch risk variables
-idx = which(grepl('anxiety', vars))
-idx = which(grepl('anxious', vars))
-
-idx=c(836, 869, 872)
-vars[idx]
-vars.codes[idx]
 
 ## Create Database MYUKBB to sample from (run on j00 so it can check fMRI data availability)
 load(file.path(PATH, 'ICD.RData'))
@@ -237,28 +253,48 @@ for (i in 1:N) {
 assert((F400|F401|F402|F408|F409|F410|F411|F412|F413|F418|F419) == ICDAnxietyDiag)
 
 ## Lifetime Major Depression status (Smith et al.; 2013, Plos One)
-def1 = my_ukb_data$ever_depressed_for_a_whole_week_2_0 == 'Yes' # 4598
+def1 = my_ukb_data$ever_depressed_for_a_whole_week_0_0 == 'Yes' |
+       my_ukb_data$ever_depressed_for_a_whole_week_1_0 == 'Yes' |
+       my_ukb_data$ever_depressed_for_a_whole_week_2_0 == 'Yes'# 4598
 def1[is.na(def1)] = FALSE
 
-def2 = my_ukb_data$ever_unenthusiasticdisinterested_for_a_whole_week_2_0 == 'Yes' # 4631
+def2 = my_ukb_data$ever_unenthusiasticdisinterested_for_a_whole_week_0_0 == 'Yes' |
+       my_ukb_data$ever_unenthusiasticdisinterested_for_a_whole_week_1_0 == 'Yes' |
+       my_ukb_data$ever_unenthusiasticdisinterested_for_a_whole_week_2_0 == 'Yes' # 4631
 def2[is.na(def2)] = FALSE
 
-def3 = my_ukb_data$number_of_depression_episodes_2_0 == 1 | # 4620 / 5386
+def3 = my_ukb_data$number_of_depression_episodes_0_0 == 1 | # 4620
+       my_ukb_data$number_of_depression_episodes_1_0 == 1 |
+       my_ukb_data$number_of_depression_episodes_2_0 == 1 | 
+       my_ukb_data$number_of_unenthusiasticdisinterested_episodes_0_0 == 1 | # 5386
+       my_ukb_data$number_of_unenthusiasticdisinterested_episodes_1_0 == 1 |
        my_ukb_data$number_of_unenthusiasticdisinterested_episodes_2_0 == 1
 def3[is.na(def3)] = FALSE
 
-def4 = my_ukb_data$number_of_depression_episodes_2_0 >= 2 | # 4620 / 5386
+def4 = my_ukb_data$number_of_depression_episodes_0_0 >= 2 | # 4620
+       my_ukb_data$number_of_depression_episodes_1_0 >= 2 |
+       my_ukb_data$number_of_depression_episodes_2_0 >= 2 |
+       my_ukb_data$number_of_unenthusiasticdisinterested_episodes_0_0 >= 2 | # 5386
+       my_ukb_data$number_of_unenthusiasticdisinterested_episodes_1_0 >= 2 | 
        my_ukb_data$number_of_unenthusiasticdisinterested_episodes_2_0 >= 2
 def4[is.na(def4)] = FALSE
 
-def5 = my_ukb_data$longest_period_of_depression_2_0 >= 2 | # 4609 / 5375
+def5 = my_ukb_data$longest_period_of_depression_0_0 >= 2 | # 4609
+       my_ukb_data$longest_period_of_depression_1_0 >= 2 | # 4609
+       my_ukb_data$longest_period_of_depression_2_0 >= 2 |
+       my_ukb_data$longest_period_of_unenthusiasm__disinterest_0_0 >= 2 | # 5375
+       my_ukb_data$longest_period_of_unenthusiasm__disinterest_1_0 >= 2 |
        my_ukb_data$longest_period_of_unenthusiasm__disinterest_2_0 >= 2
 def5[is.na(def5)] = FALSE
 
-def6 = my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_2_0 == 'Yes' # 2090
+def6 = my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_0_0 == 'Yes' | # 2090
+       my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_1_0 == 'Yes' |
+       my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_2_0 == 'Yes'
 def6[is.na(def6)] = FALSE
 
-def7 = my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_2_0 == 'Yes' # 2100
+def7 = my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_0_0 == 'Yes' | # 2100
+       my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_1_0 == 'Yes' |
+       my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_2_0 == 'Yes'
 def7[is.na(def7)] = FALSE
 
 MD.single   = (def1 | def2) & def3 & def5 & (def6 | def7)
@@ -278,39 +314,66 @@ which(grepl('20107', vars.codes))
 string="Severe depression"
 
 # 20107
-md.father = my_ukb_data$illnesses_of_father_2_0 == string | my_ukb_data$illnesses_of_father_2_1 == string |
-         my_ukb_data$illnesses_of_father_2_2 == string | my_ukb_data$illnesses_of_father_2_3 == string |
-         my_ukb_data$illnesses_of_father_2_4 == string | my_ukb_data$illnesses_of_father_2_5 == string |
-         my_ukb_data$illnesses_of_father_2_6 == string | my_ukb_data$illnesses_of_father_2_7 == string |
-         my_ukb_data$illnesses_of_father_2_8 == string | my_ukb_data$illnesses_of_father_2_9 == string
+md.father =  my_ukb_data$illnesses_of_father_0_0 == string | my_ukb_data$illnesses_of_father_0_1 == string |
+             my_ukb_data$illnesses_of_father_0_2 == string | my_ukb_data$illnesses_of_father_0_3 == string |
+             my_ukb_data$illnesses_of_father_0_4 == string | my_ukb_data$illnesses_of_father_0_5 == string |
+             my_ukb_data$illnesses_of_father_0_6 == string | my_ukb_data$illnesses_of_father_0_7 == string |
+             my_ukb_data$illnesses_of_father_0_8 == string | my_ukb_data$illnesses_of_father_0_9 == string |
+             my_ukb_data$illnesses_of_father_1_0 == string | my_ukb_data$illnesses_of_father_1_1 == string |
+             my_ukb_data$illnesses_of_father_1_2 == string | my_ukb_data$illnesses_of_father_1_3 == string |
+             my_ukb_data$illnesses_of_father_1_4 == string | my_ukb_data$illnesses_of_father_1_5 == string |
+             my_ukb_data$illnesses_of_father_1_6 == string | my_ukb_data$illnesses_of_father_1_7 == string |
+             my_ukb_data$illnesses_of_father_1_8 == string | my_ukb_data$illnesses_of_father_1_9 == string |
+             my_ukb_data$illnesses_of_father_2_0 == string | my_ukb_data$illnesses_of_father_2_1 == string |
+             my_ukb_data$illnesses_of_father_2_2 == string | my_ukb_data$illnesses_of_father_2_3 == string |
+             my_ukb_data$illnesses_of_father_2_4 == string | my_ukb_data$illnesses_of_father_2_5 == string |
+             my_ukb_data$illnesses_of_father_2_6 == string | my_ukb_data$illnesses_of_father_2_7 == string |
+             my_ukb_data$illnesses_of_father_2_8 == string | my_ukb_data$illnesses_of_father_2_9 == string
 
 # 20110
-md.mother = my_ukb_data$illnesses_of_mother_2_0 == string | my_ukb_data$illnesses_of_mother_2_1 == string |
-         my_ukb_data$illnesses_of_mother_2_2 == string | my_ukb_data$illnesses_of_mother_2_3 == string |
-         my_ukb_data$illnesses_of_mother_2_4 == string | my_ukb_data$illnesses_of_mother_2_5 == string |
-         my_ukb_data$illnesses_of_mother_2_6 == string | my_ukb_data$illnesses_of_mother_2_7 == string |
-         my_ukb_data$illnesses_of_mother_2_8 == string | my_ukb_data$illnesses_of_mother_2_9 == string |
-         my_ukb_data$illnesses_of_mother_2_10 == string
+md.mother =  my_ukb_data$illnesses_of_mother_0_0 == string | my_ukb_data$illnesses_of_mother_0_1 == string |
+             my_ukb_data$illnesses_of_mother_0_2 == string | my_ukb_data$illnesses_of_mother_0_3 == string |
+             my_ukb_data$illnesses_of_mother_0_4 == string | my_ukb_data$illnesses_of_mother_0_5 == string |
+             my_ukb_data$illnesses_of_mother_0_6 == string | my_ukb_data$illnesses_of_mother_0_7 == string |
+             my_ukb_data$illnesses_of_mother_0_8 == string | my_ukb_data$illnesses_of_mother_0_9 == string |
+             my_ukb_data$illnesses_of_mother_0_10 == string|
+             my_ukb_data$illnesses_of_mother_1_0 == string | my_ukb_data$illnesses_of_mother_1_1 == string |
+             my_ukb_data$illnesses_of_mother_1_2 == string | my_ukb_data$illnesses_of_mother_1_3 == string |
+             my_ukb_data$illnesses_of_mother_1_4 == string | my_ukb_data$illnesses_of_mother_1_5 == string |
+             my_ukb_data$illnesses_of_mother_1_6 == string | my_ukb_data$illnesses_of_mother_1_7 == string |
+             my_ukb_data$illnesses_of_mother_1_8 == string | my_ukb_data$illnesses_of_mother_1_9 == string |
+             my_ukb_data$illnesses_of_mother_1_10 == string|
+             my_ukb_data$illnesses_of_mother_2_0 == string | my_ukb_data$illnesses_of_mother_2_1 == string |
+             my_ukb_data$illnesses_of_mother_2_2 == string | my_ukb_data$illnesses_of_mother_2_3 == string |
+             my_ukb_data$illnesses_of_mother_2_4 == string | my_ukb_data$illnesses_of_mother_2_5 == string |
+             my_ukb_data$illnesses_of_mother_2_6 == string | my_ukb_data$illnesses_of_mother_2_7 == string |
+             my_ukb_data$illnesses_of_mother_2_8 == string | my_ukb_data$illnesses_of_mother_2_9 == string |
+             my_ukb_data$illnesses_of_mother_2_10 == string
 
 # 20111
-md.siblings = my_ukb_data$illnesses_of_siblings_2_0 == string | my_ukb_data$illnesses_of_siblings_2_1 == string |
-         my_ukb_data$illnesses_of_siblings_2_2 == string | my_ukb_data$illnesses_of_siblings_2_3 == string |
-         my_ukb_data$illnesses_of_siblings_2_4 == string | my_ukb_data$illnesses_of_siblings_2_5 == string |
-         my_ukb_data$illnesses_of_siblings_2_6 == string | my_ukb_data$illnesses_of_siblings_2_7 == string |
-         my_ukb_data$illnesses_of_siblings_2_8 == string | my_ukb_data$illnesses_of_siblings_2_9 == string |
-         my_ukb_data$illnesses_of_siblings_2_10 == string| my_ukb_data$illnesses_of_siblings_2_11 == string
+md.siblings = my_ukb_data$illnesses_of_siblings_0_0 == string | my_ukb_data$illnesses_of_siblings_0_1 == string |
+              my_ukb_data$illnesses_of_siblings_0_2 == string | my_ukb_data$illnesses_of_siblings_0_3 == string |
+              my_ukb_data$illnesses_of_siblings_0_4 == string | my_ukb_data$illnesses_of_siblings_0_5 == string |
+              my_ukb_data$illnesses_of_siblings_0_6 == string | my_ukb_data$illnesses_of_siblings_0_7 == string |
+              my_ukb_data$illnesses_of_siblings_0_8 == string | my_ukb_data$illnesses_of_siblings_0_9 == string |
+              my_ukb_data$illnesses_of_siblings_0_10 == string| my_ukb_data$illnesses_of_siblings_0_11 == string|
+              my_ukb_data$illnesses_of_siblings_1_0 == string | my_ukb_data$illnesses_of_siblings_1_1 == string |
+              my_ukb_data$illnesses_of_siblings_1_2 == string | my_ukb_data$illnesses_of_siblings_1_3 == string |
+              my_ukb_data$illnesses_of_siblings_1_4 == string | my_ukb_data$illnesses_of_siblings_1_5 == string |
+              my_ukb_data$illnesses_of_siblings_1_6 == string | my_ukb_data$illnesses_of_siblings_1_7 == string |
+              my_ukb_data$illnesses_of_siblings_1_8 == string | my_ukb_data$illnesses_of_siblings_1_9 == string |
+              my_ukb_data$illnesses_of_siblings_1_10 == string| my_ukb_data$illnesses_of_siblings_1_11 == string|
+              my_ukb_data$illnesses_of_siblings_2_0 == string | my_ukb_data$illnesses_of_siblings_2_1 == string |
+              my_ukb_data$illnesses_of_siblings_2_2 == string | my_ukb_data$illnesses_of_siblings_2_3 == string |
+              my_ukb_data$illnesses_of_siblings_2_4 == string | my_ukb_data$illnesses_of_siblings_2_5 == string |
+              my_ukb_data$illnesses_of_siblings_2_6 == string | my_ukb_data$illnesses_of_siblings_2_7 == string |
+              my_ukb_data$illnesses_of_siblings_2_8 == string | my_ukb_data$illnesses_of_siblings_2_9 == string |
+              my_ukb_data$illnesses_of_siblings_2_10 == string| my_ukb_data$illnesses_of_siblings_2_11 == string
 
 md.father[is.na(md.father)] = FALSE
 md.mother[is.na(md.mother)] = FALSE
 md.siblings[is.na(md.siblings)] = FALSE
 md.family = md.father | md.mother | md.siblings
-
-# Educaton
-string = "College or University degree"
-university = my_ukb_data$qualifications_2_0 == string | my_ukb_data$qualifications_2_1 == string |
-             my_ukb_data$qualifications_2_2 == string | my_ukb_data$qualifications_2_3 == string |
-             my_ukb_data$qualifications_2_4 == string | my_ukb_data$qualifications_2_5 == string
-university[is.na(university)] = FALSE
 
 # Ethnic background
 ethnic_white = c("White", "British", "Irish", "Any other white background")
@@ -348,21 +411,59 @@ ethnic.background[ethnic.noanswer] = "no answer"
 ethnic.background[ethnic.unknown] = "unknown"
 ethnic.background = as.factor(ethnic.background)
 
+# age
+age_approx = 2015 - my_ukb_data$year_of_birth_0_0
+age = my_ukb_data$age_when_attended_assessment_centre_2_0
+idx = is.na(age)
+age[idx]= age_approx[idx]
+
+# education
+education = my_ukb_data$qualifications_0_0
+idx=is.na(education)
+education[idx] = my_ukb_data$qualifications_1_0[idx]
+idx=is.na(education)
+education[idx] = my_ukb_data$qualifications_2_0[idx]
+
+# risk
+worrier_anxious_feelings = my_ukb_data$worrier__anxious_feelings_0_0
+idx = is.na(my_ukb_data$worrier__anxious_feelings_1_0)
+worrier_anxious_feelings[!idx] = my_ukb_data$worrier__anxious_feelings_1_0[!idx]
+idx = is.na(my_ukb_data$worrier__anxious_feelings_2_0)
+worrier_anxious_feelings[!idx] = my_ukb_data$worrier__anxious_feelings_2_0[!idx]
+
+seen_gp = my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_0_0
+idx = is.na(my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_1_0)
+seen_gp[!idx] = my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_1_0[!idx]
+idx = is.na(my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_2_0)
+seen_gp[!idx] = my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_2_0[!idx]
+
+seen_psychiatrist = my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_0_0
+idx = is.na(my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_1_0)
+seen_psychiatrist[!idx] = my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_1_0[!idx]
+idx = is.na(my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_2_0)
+seen_psychiatrist[!idx] = my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_2_0[!idx]
+
+## overall health
+overall_health = my_ukb_data$overall_health_rating_0_0
+idx = is.na(my_ukb_data$overall_health_rating_1_0)
+overall_health[!idx] = my_ukb_data$overall_health_rating_1_0[!idx]
+idx = is.na(my_ukb_data$overall_health_rating_2_0)
+overall_health[!idx] = my_ukb_data$overall_health_rating_2_0[!idx]
+
+longstanding_illness = my_ukb_data$longstanding_illness_disability_or_infirmity_0_0
+idx = is.na(my_ukb_data$longstanding_illness_disability_or_infirmity_1_0)
+longstanding_illness[!idx] = my_ukb_data$longstanding_illness_disability_or_infirmity_1_0[!idx]
+idx = is.na(my_ukb_data$longstanding_illness_disability_or_infirmity_2_0)
+longstanding_illness[!idx] = my_ukb_data$longstanding_illness_disability_or_infirmity_2_0[!idx]
+
+
 ## Create sampling Database
 MYUKBB=data.frame(eid=as.factor(my_ukb_data$eid),
                   # demographics
                   sex=my_ukb_data$sex_0_0,                    
-                  age0=my_ukb_data$age_when_attended_assessment_centre_0_0,
-                  age1=my_ukb_data$age_when_attended_assessment_centre_1_0,
-                  age2=my_ukb_data$age_when_attended_assessment_centre_2_0,
-                  age_approx=2015-my_ukb_data$year_of_birth_0_0,
-                  ethnic.background,
-                  university,
-                  handedness=my_ukb_data$handedness_chiralitylaterality_2_0,
+                  age, ethnic.background, education, handedness=my_ukb_data$handedness_chiralitylaterality_0_0,
                   # Risk factors
-                  worrier_anxious_feelings=my_ukb_data$worrier__anxious_feelings_2_0 == 'Yes',
-                  seen_gp=my_ukb_data$seen_doctor_gp_for_nerves_anxiety_tension_or_depression_2_0 == 'Yes',
-                  seen_psychiatrist=my_ukb_data$seen_a_psychiatrist_for_nerves_anxiety_tension_or_depression_2_0 == 'Yes',
+                  worrier_anxious_feelings, seen_gp, seen_psychiatrist,
                   # MD status
                   MD.all, MD.single, MD.moderate, MD.severe, MD.status,
                   # Family 
@@ -380,55 +481,62 @@ MYUKBB=data.frame(eid=as.factor(my_ukb_data$eid),
                   ICDAnxietyDiag, ICDDeprDiag, ICDMentalDiag, ICDOtherMentalDiag,
                   ICDNeuroDiag, ICDHeadInjury,
                   # fMRI
-                  hasfMRI=hasfMRI,
+                  hasfMRI,
                   # overall health
-                  overall_health=my_ukb_data$overall_health_rating_2_0,
-                  longstanding_illness=my_ukb_data$longstanding_illness_disability_or_infirmity_2_0
+                  overall_health, longstanding_illness
                   )
 
-# fix age
-idx = is.na(MYUKBB$age2)
-MYUKBB$age2_ = MYUKBB$age2
-MYUKBB$age2_[idx]= MYUKBB$age_approx[idx] # new age2 (imaging follow up) variable without missings
-# summary(my_ukb_data$date_of_attending_assessment_centre_2_0)
-
-#summary(MYUKBB$age_approx-MYUKBB$age2)
-#summary(MYUKBB$age_approx2-MYUKBB$age2)
 
 # Save the database to sample the groups from:
 # save(MYUKBB, file = file.path(PATH, 'MYUKBB.RData'))
 
-## Create at-risk sample
+## Create samples
+PATH = '~/ukbiobank'
+load(file = file.path(PATH, 'MYUKBB.RData'))
+attach(MYUKBB)
 
-is.depress = illness_depression & !illness_anxiety & !illness_neurotrauma & !illness_neurodegen & !illness_MS & 
-             !illness_parkinson & !illness_dementia & !illness_headinjury & !illness_schizophr & !illness_bipolar &
-             !illness_stroke & !illness_demyelin & !illness_guillain & hasfMRI
+neuro      = illness_neurotrauma | illness_neurodegen | illness_MS         | 
+             illness_parkinson   | illness_dementia   | illness_headinjury |
+             illness_schizophr   | illness_bipolar    | illness_stroke     | 
+             illness_demyelin    | illness_guillain
 
-is.depress2 =MDstatus & !illness_neurotrauma & !illness_neurodegen & !illness_MS & 
-             !illness_parkinson & !illness_dementia & !illness_headinjury & !illness_schizophr & !illness_bipolar &
-             !illness_stroke & !illness_demyelin & !illness_guillain & hasfMRI
+healthy    = (overall_health == "Excellent" | overall_health == "Good") & longstanding_illness == "No"
+healthy[is.na(healthy)] = FALSE
 
-is.anxiety = !illness_depression & illness_anxiety & !illness_neurotrauma & !illness_neurodegen & !illness_MS & 
-             !illness_parkinson & !illness_dementia & !illness_headinjury & !illness_schizophr & !illness_bipolar &
-             !illness_stroke & !illness_demyelin & !illness_guillain & hasfMRI
+rightHanded = (handedness == "Right-handed")
+rightHanded[is.na(rightHanded)] = FALSE
 
-is.patient = (illness_depression | illness_anxiety) & !illness_neurotrauma & !illness_neurodegen & !illness_MS & 
-             !illness_parkinson & !illness_dementia & !illness_headinjury & !illness_schizophr & !illness_bipolar &
-             !illness_stroke & !illness_demyelin & !illness_guillain & hasfMRI
+is.MD      = hasfMRI & rightHanded & !neuro &  MD.all
+is.risk    = hasfMRI & rightHanded & !neuro & !MD.all & md.family
+is.control = hasfMRI & rightHanded & !neuro & !MD.all & !illness_psychiatric & !illness_depression &
+             !illness_anxiety & !md.family & healthy
 
-is.control = !MDstatus & !illness_depression & !illness_anxiety & !illness_neurotrauma & !illness_neurodegen & !illness_MS & 
-             !illness_parkinson & !illness_dementia & !illness_headinjury & !illness_schizophr & !illness_bipolar &
-             !illness_stroke & !illness_demyelin & !illness_guillain & hasfMRI
+MYUKBB$neuroExclusion=neuro
+MYUKBB$isHealthy=healthy
+MYUKBB$rightHanded=rightHanded
+MYUKBB$is.MD=is.MD
+MYUKBB$is.risk=is.risk
+MYUKBB$is.control=is.control
 
-sum(is.depress)
-sum(is.anxiety)
-sum(is.patient)
-sum(is.control) 
-isRisk = MYUKBB$worrier_anxious_feelings & (MYUKBB$seen_gp | MYUKBB$seen_psychiatrist) & !MYUKBB$hasNeuroDiag & !MYUKBB$hasHeadInjury & !MYUKBB$hasOtherMentalDiag & MYUKBB$hasfMRI
-isControl = !MYUKBB$worrier_anxious_feelings & !MYUKBB$seen_gp & !MYUKBB$seen_psychiatrist & !MYUKBB$hasMentalDiag & !MYUKBB$hasNeuroDiag & !MYUKBB$hasHeadInjury & MYUKBB$hasfMRI
+# sample groups
+set.seed(1980)
+N=nrow(MYUKBB)
+n=1000
 
-risk=subset(MYUKBB, subset = isRisk)
-controls=subset(MYUKBB, subset = isControl)
+a = sample(which(is.MD), n, replace = FALSE)
+b = sample(which(is.risk), n, replace = FALSE)
+c = sample(which(is.control), n, replace = FALSE)
+
+selection = rep(FALSE, N)
+selection[a] = TRUE
+selection[b] = TRUE
+selection[c] = TRUE
+
+mydata = subset(MYUKBB, subset=selection)
+#save(mydata, file = file.path(PATH, 'UKBB-MH.RData'))
+
+# write subjetd eid file
+write(as.character(mydata$eid), file='~/UKBB-MH/results/subjectsN3000.txt', ncolumns = 1)
 
 ## Matched samples (we are not using this code, we take the complete healthy sample as controls)
 # For each patient we select a control of the same age and gender
@@ -448,38 +556,3 @@ idx = rep(FALSE, nrow(controls_))
 idx[selection]=TRUE
 controls = subset(controls_, subset = idx)
 
-## Sanity checks
-summary(risk)
-summary(controls)
-
-assert(sum(patients$eid %in% controls$eid) == 0)
-
-subjects = rbind(controls, patients)
-subjects$group = as.factor(c(rep("control", N/2),rep("patient", N/2)))
-subjects=subjects[order(subjects$eid),]
-
-#save(subjects, file = file.path(PATH, 'UKBB-MH.RData'))
-
-## Load groups and demographic descriptives 
-PATH = '~/ukbiobank'
-load(file.path(PATH, 'UKBB-MH.RData'))
-
-# write subjetd eid file
-write(as.character(subjects$eid), file='~/UKBB-MH/results/subjectsN158.txt', ncolumns = 1)
-
-# check if fMRI data available, run this on j00
-N=nrow(subjects)
-PATH_FMRI='/vols/Data/ukbiobank/FMRIB/IMAGING/data3/SubjectsAll'
-hasfMRI = rep(NA, N)
-for (i in 1:N) {  
-  hasfMRI[i] = file.exists(file.path(PATH_FMRI, subjects$eid[i], 'fMRI/rfMRI.ica/reg_standard/filtered_func_data_clean.nii.gz'))
-}
-
-subjects$hasfMRI = hasfMRI
-# save(subjects, file = file.path(PATH, 'UKBB-MH.RData'))
-
-# check 
-sum(subjects$hasfMRI[subjects$group == 'control'])
-sum(subjects$hasfMRI[subjects$group == 'patient'])
-
-summary(subjects)
