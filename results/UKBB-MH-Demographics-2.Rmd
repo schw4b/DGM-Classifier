@@ -1,0 +1,190 @@
+---
+title: "UKBB-MH-Demographics-2"
+author: "Simon Schwab"
+date: "21 June 2018"
+output: html_notebook
+---
+
+## Libraries
+```{r message=FALSE}
+library(ggplot2)
+library(cowplot)
+library(testit)
+```
+
+## Variables
+```{r}
+PATH_HOME = '/home/simon'
+PATH_PROJ = file.path(PATH_HOME, 'Data', 'UKBB-MH') # Project path
+PATH_RESULTS = file.path(PATH_PROJ, 'results')
+PATH_FIGS = file.path(PATH_PROJ, 'figures')
+PATH_UKBB = file.path(PATH_HOME, 'Drive', 'ukbiobank')
+```
+
+## Load subject info
+```{r}
+load(file = file.path(PATH_UKBB, 'UKBB-MH.RData'))
+mydata = MYUKBB.2.matched
+N=nrow(mydata)
+Ng=N/3
+
+assert(sum(mydata$hasfMRI) == N)
+
+is.ctrl = mydata$is.control
+is.pati = mydata$is.MD
+is.risk = mydata$is.risk
+
+# create group variable
+group = rep(NA, N)
+group[is.ctrl] = "control"
+group[is.pati] = "patient"
+group[is.risk] = "risk"
+group = as.factor(group)
+mydata$group = group
+```
+
+## Group sizes
+```{r}
+sprintf('Total N=%d',N)
+summary(mydata$group)
+```
+
+## Gender
+```{r}
+round(summary(mydata$sex[is.ctrl])/Ng, digits = 2)
+round(summary(mydata$sex[is.pati])/Ng, digits = 2)
+round(summary(mydata$sex[is.risk])/Ng, digits = 2)
+
+prop.test(c(summary(mydata$sex[is.ctrl])[1],
+            summary(mydata$sex[is.pati])[1],
+            summary(mydata$sex[is.risk])[1]),
+          rep(Ng, 3))
+```
+
+## Age
+```{r}
+table=array(NA, dim=c(3,2))
+
+table[1,1] = mean(mydata$age[is.ctrl]); table[1,2] = sd(mydata$age[is.ctrl]);
+table[2,1] = mean(mydata$age[is.pati]); table[2,2] = sd(mydata$age[is.pati]);
+table[3,1] = mean(mydata$age[is.risk]); table[3,2] = sd(mydata$age[is.risk]);
+rownames(table) = c("controls", "patients", "at-risk")
+colnames(table) = c("mean", "sd")
+print(table)
+
+summary(aov(age ~ group, data = mydata))
+```
+
+## Ethnic background
+```{r}
+round(summary(mydata$ethnic.background[is.ctrl])/Ng, digits = 2)
+round(summary(mydata$ethnic.background[is.pati])/Ng, digits = 2)
+round(summary(mydata$ethnic.background[is.risk])/Ng, digits = 2)
+
+prop.test(c(summary(mydata$ethnic.background[is.ctrl])[8],
+            summary(mydata$ethnic.background[is.pati])[8],
+            summary(mydata$ethnic.background[is.risk])[8]),
+          rep(Ng, 3))
+```
+
+## Education
+```{r}
+s = "College or University degree"
+sum(mydata$education[is.ctrl] == s, na.rm = T) / Ng
+sum(mydata$education[is.pati] == s, na.rm = T) / Ng
+sum(mydata$education[is.risk] == s, na.rm = T) / Ng
+
+prop.test(c(sum(mydata$education[is.ctrl] == s, na.rm = T),
+            sum(mydata$education[is.pati] == s, na.rm = T),
+            sum(mydata$education[is.risk] == s, na.rm = T)),
+          rep(Ng, 3)
+)
+```
+
+## Handedness
+```{r}
+summary(mydata$handedness)
+```
+
+## Clinical features
+
+### Anxous feelings
+```{r}
+tapply(mydata$worrier_anxious_feelings, mydata$group, function(x) round(summary(x)/Ng, digits = 2))
+```
+### Seen GP
+```{r}
+tapply(mydata$seen_gp, mydata$group, function(x) round(summary(x)/Ng, digits = 2))
+```
+
+### Seen Psychiatrist
+```{r}
+tapply(mydata$seen_psychiatrist, mydata$group, function(x) round(summary(x)/Ng, digits = 2))
+```
+
+## Lifetime Major Depression status
+```{r}
+tapply(mydata$MD.status, mydata$group, function(x) round(summary(x)/Ng, digits = 2))
+```
+
+## Family history of severe depression
+```{r}
+x=array(NA, dim=c(1,3))
+x[1,]=round(c(sum(mydata$md.family[is.ctrl]), sum(mydata$md.family[is.pati]), sum(mydata$md.family[is.risk]))/Ng, digits = 2)
+colnames(x)=c("Control","Patient","at-risk")
+print(x)
+```
+
+## Medical history
+
+### Exclusions
+```{r}
+assert(sum(mydata$illness_neurotrauma) == 0)
+assert(sum(mydata$illness_neurodegen) == 0)
+assert(sum(mydata$illness_MD) == 0)
+assert(sum(mydata$illness_parkinson) == 0)
+assert(sum(mydata$illness_dementia) == 0)
+assert(sum(mydata$illness_headinjury) == 0)
+assert(sum(mydata$illness_schizophr) == 0)
+assert(sum(mydata$illness_bipolar) == 0)
+assert(sum(mydata$illness_stroke) == 0)
+assert(sum(mydata$illness_demyelin) == 0)
+assert(sum(mydata$illness_guillain) == 0)
+```
+### Depression
+```{r}
+x=array(NA, dim=c(1,3))
+x[1,]=round(c(sum(mydata$illness_depression[is.ctrl]),
+              sum(mydata$illness_depression[is.pati]),
+              sum(mydata$illness_depression[is.risk]))/Ng, digits = 2)
+colnames(x)=c("Control","Patient","at-risk")
+print(x)
+```
+
+### Anxiety
+```{r}
+x=array(NA, dim=c(1,3))
+x[1,]=round(c(sum(mydata$illness_anxiety[is.ctrl]),
+              sum(mydata$illness_anxiety[is.pati]),
+              sum(mydata$illness_anxiety[is.risk]))/Ng, digits = 2)
+colnames(x)=c("Control","Patient","at-risk")
+print(x)
+```
+
+## General health
+
+### Overall health
+```{r}
+tapply(mydata$overall_health, mydata$group, function(x) round(summary(x)/Ng, digits = 2))
+```
+
+### Longstanding illness
+```{r}
+tapply(mydata$longstanding_illness, mydata$group, function(x) round(summary(x)/Ng, digits = 2))
+```
+
+## Variable names
+```{r}
+names(mydata)
+```
+
