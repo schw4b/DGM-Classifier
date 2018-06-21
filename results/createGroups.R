@@ -506,10 +506,13 @@ healthy[is.na(healthy)] = FALSE
 rightHanded = (handedness == "Right-handed")
 rightHanded[is.na(rightHanded)] = FALSE
 
-is.MD      = hasfMRI & rightHanded & !neuro &  MD.all
-is.risk    = hasfMRI & rightHanded & !neuro & !MD.all & md.family
+# matching variables age, sex and education cannot contain NaN's
+missing = is.na(sex) | is.na(age) | is.na(education) | is.na(ethnic.background)
+
+is.MD      = hasfMRI & rightHanded & !neuro &  MD.all & !missing
+is.risk    = hasfMRI & rightHanded & !neuro & !MD.all & md.family & !missing
 is.control = hasfMRI & rightHanded & !neuro & !MD.all & !illness_psychiatric & !illness_depression &
-             !illness_anxiety & !md.family & healthy
+             !illness_anxiety & !md.family & healthy & !missing
 
 MYUKBB$neuroExclusion=neuro
 MYUKBB$isHealthy=healthy
@@ -518,25 +521,69 @@ MYUKBB$is.MD=is.MD
 MYUKBB$is.risk=is.risk
 MYUKBB$is.control=is.control
 
-# sample groups
-set.seed(1980)
+## Match groups
+library(MatchIt)
+library(testit)
+
 N=nrow(MYUKBB)
-n=1000
+set.seed(1980)
 
-a = sample(which(is.MD), n, replace = FALSE)
-b = sample(which(is.risk), n, replace = FALSE)
-c = sample(which(is.control), n, replace = FALSE)
+# split data in two independed samples
+eid.1 = sample(MYUKBB$eid, round(N/2))
+eid.2 = MYUKBB$eid[!(MYUKBB$eid %in% eid.1)]
 
-selection = rep(FALSE, N)
-selection[a] = TRUE
-selection[b] = TRUE
-selection[c] = TRUE
+idx.1 = MYUKBB$eid %in% eid.1
+idx.2 = MYUKBB$eid %in% eid.2
 
-mydata = subset(MYUKBB, subset=selection)
-#save(mydata, file = file.path(PATH, 'UKBB-MH.RData'))
+assert( sum((idx.1+idx.2) == 1) == N)
+
+MYUKBB.1 = subset(MYUKBB, subset=idx.1)
+MYUKBB.2 = subset(MYUKBB, subset=idx.2)
+
+n.1 = sum(MYUKBB.1$is.risk)
+n.2 = sum(MYUKBB.2$is.risk)
+
+# select subset of variables relevant for matching
+MYUKBB.1.sub =  MYUKBB.1[,c(1:5,69:71)]
+MYUKBB.2.sub =  MYUKBB.2[,c(1:5,69:71)]
+
+# matching md and controls to at-risk group
+MYUKBB.1.sub.md  = subset(MYUKBB.1.sub, subset = MYUKBB.1.sub$is.risk | MYUKBB.1.sub$is.MD)
+MYUKBB.1.sub.ctr = subset(MYUKBB.1.sub, subset = MYUKBB.1.sub$is.risk | MYUKBB.1.sub$is.control)
+
+match.md.1  = matchit(is.risk ~ age + sex + education + ethnic.background,
+                      data = MYUKBB.1.sub.md,  method="nearest", ratio=1)
+match.ctr.1 = matchit(is.risk ~ age + sex + education + ethnic.background,
+                      data = MYUKBB.1.sub.ctr, method="nearest", ratio=1)
+
+eid.1.matched = c(as.character(MYUKBB.1$eid[MYUKBB.1$is.risk]),
+                  as.character(MYUKBB$eid[as.numeric(match.md.1$match.matrix)]),
+                  as.character(MYUKBB$eid[as.numeric(match.ctr.1$match.matrix)]))
+
+idx.1.matched = MYUKBB$eid %in% eid.1.matched
+MYUKBB.1.matched = subset(MYUKBB, subset=idx.1.matched)
+
+# replication sample
+MYUKBB.2.sub.md  = subset(MYUKBB.2.sub, subset = MYUKBB.2.sub$is.risk | MYUKBB.2.sub$is.MD)
+MYUKBB.2.sub.ctr = subset(MYUKBB.2.sub, subset = MYUKBB.2.sub$is.risk | MYUKBB.2.sub$is.control)
+
+match.md.2  = matchit(is.risk ~ age + sex + education + ethnic.background,
+                      data = MYUKBB.2.sub.md,  method="nearest", ratio=1)
+match.ctr.2 = matchit(is.risk ~ age + sex + education + ethnic.background,
+                      data = MYUKBB.2.sub.ctr, method="nearest", ratio=1)
+
+eid.2.matched = c(as.character(MYUKBB.2$eid[MYUKBB.2$is.risk]),
+                  as.character(MYUKBB$eid[as.numeric(match.md.2$match.matrix)]),
+                  as.character(MYUKBB$eid[as.numeric(match.ctr.2$match.matrix)]))
+
+idx.2.matched = MYUKBB$eid %in% eid.2.matched
+MYUKBB.2.matched = subset(MYUKBB, subset=idx.2.matched)
+
+# save(MYUKBB.1.matched, MYUKBB.2.matched, file = file.path(PATH, 'UKBB-MH.RData'))
 
 # write subjetd eid file
-write(as.character(mydata$eid), file='~/UKBB-MH/results/subjectsN3000.txt', ncolumns = 1)
+# write(as.character(MYUKBB.1.matched$eid), file=sprintf('~/UKBB-MH/results/subjectsN%d_1.txt', nrow(MYUKBB.1.matched)), ncolumns = 1)
+# write(as.character(MYUKBB.2.matched$eid), file=sprintf('~/UKBB-MH/results/subjectsN%d_2.txt', nrow(MYUKBB.2.matched)), ncolumns = 1)
 
 ## Matched samples (we are not using this code, we take the complete healthy sample as controls)
 # For each patient we select a control of the same age and gender
