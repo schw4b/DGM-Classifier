@@ -24,5 +24,15 @@ cat header.tab lines/* > ukbiobank.tab
 # eg 1234567_99_rois104.txt 1234567_099_rois104.txt
 for file in `ls *.txt`; do echo $file `echo $file|sed  -r 's/([0-9]{7})_([0-9]{2})_(rois104)/\1_0\2_\3/'` ; done
 
+# extract some variables from Steve's workspace
+cd('~/ukbiobank')
+N=length(FMRIB_info(:,1));
 
+fid = fopen('more_age.txt','w');
+fprintf(fid, '%s %s %s\n', 'eid', 'age_2_0', 'scanDate');
+for i=1:N   
+   fprintf(fid, '%d %f %f\n', FMRIB_info(i,1), age(i),scan_date(i));
+end
 
+fclose(fid);
+   
