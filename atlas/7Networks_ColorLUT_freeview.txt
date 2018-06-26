@@ -1,4 +1,3 @@
-  0                                     NONE   0   0   0   0
   1                         7Networks_LH_Vis 120  18 134   0
   2                      7Networks_LH_SomMot  70 130 180   0
   3               7Networks_LH_DorsAttn_Post   0 118  14   0
