@@ -412,10 +412,22 @@ ethnic.background[ethnic.unknown] = "unknown"
 ethnic.background = as.factor(ethnic.background)
 
 # age
-age_approx = 2015 - my_ukb_data$year_of_birth_0_0
-age = my_ukb_data$age_when_attended_assessment_centre_2_0
-idx = is.na(age)
-age[idx]= age_approx[idx]
+# we load complete information about age
+more_age = read.table(file.path(PATH, 'more_age.txt'), header=TRUE)
+idx = match(more_age$eid, my_ukb_data$eid)
+age = rep(NA, N)
+age[idx] = round(more_age$age_2_0)
+
+# cbind(age,  my_ukb_data$age_when_attended_assessment_centre_2_0)
+# max(abs(age-my_ukb_data$age_when_attended_assessment_centre_2_0), na.rm=T)
+idx = is.na(age) 
+age[idx] = my_ukb_data$age_when_attended_assessment_centre_2_0[idx]
+
+# head motion
+more_motion = read.table(file.path(PATH, 'more_motion.txt'), header=TRUE)
+idx = match(more_motion$eid, my_ukb_data$eid)
+motion = rep(NA, N)
+motion[idx] = more_motion$QC_rfMRI_head_motion
 
 # education
 education = my_ukb_data$qualifications_0_0
@@ -481,7 +493,7 @@ MYUKBB=data.frame(eid=as.factor(my_ukb_data$eid),
                   ICDAnxietyDiag, ICDDeprDiag, ICDMentalDiag, ICDOtherMentalDiag,
                   ICDNeuroDiag, ICDHeadInjury,
                   # fMRI
-                  hasfMRI,
+                  hasfMRI, motion,
                   # overall health
                   overall_health, longstanding_illness
                   )
@@ -494,7 +506,9 @@ MYUKBB=data.frame(eid=as.factor(my_ukb_data$eid),
 PATH = '~/ukbiobank'
 load(file = file.path(PATH, 'MYUKBB.RData'))
 attach(MYUKBB)
+N=nrow(MYUKBB)
 
+# sum(neuro)/N*100 2.3%
 neuro      = illness_neurotrauma | illness_neurodegen | illness_MS         | 
              illness_parkinson   | illness_dementia   | illness_headinjury |
              illness_schizophr   | illness_bipolar    | illness_stroke     | 
@@ -503,16 +517,26 @@ neuro      = illness_neurotrauma | illness_neurodegen | illness_MS         |
 healthy    = (overall_health == "Excellent" | overall_health == "Good") & longstanding_illness == "No"
 healthy[is.na(healthy)] = FALSE
 
+# sum(rightHanded)/N*100 89.2%
 rightHanded = (handedness == "Right-handed")
 rightHanded[is.na(rightHanded)] = FALSE
 
 # matching variables age, sex and education cannot contain NaN's
+# sum(missing)/N*100 3.2%
 missing = is.na(sex) | is.na(age) | is.na(education) | is.na(ethnic.background)
 
-is.MD      = hasfMRI & rightHanded & !neuro &  MD.all & !missing
-is.risk    = hasfMRI & rightHanded & !neuro & !MD.all & md.family & !missing
-is.control = hasfMRI & rightHanded & !neuro & !MD.all & !illness_psychiatric & !illness_depression &
-             !illness_anxiety & !md.family & healthy & !missing
+# all individals with fMRI have age recorded:
+# sum(is.na(age[hasfMRI]))
+# sum(hasfMRI)/N 87.9%
+
+# MD       N=2485
+# at-risk  N=1436
+# controls N=7305
+
+is.MD      = !missing & hasfMRI & rightHanded & !neuro &  MD.all
+is.risk    = !missing & hasfMRI & rightHanded & !neuro & !MD.all & md.family
+is.control = !missing & hasfMRI & rightHanded & !neuro & !MD.all & !md.family &
+             !illness_psychiatric & !illness_depression & !illness_anxiety
 
 MYUKBB$neuroExclusion=neuro
 MYUKBB$isHealthy=healthy
@@ -525,7 +549,6 @@ MYUKBB$is.control=is.control
 library(MatchIt)
 library(testit)
 
-N=nrow(MYUKBB)
 set.seed(1980)
 
 # split data in two independed samples
