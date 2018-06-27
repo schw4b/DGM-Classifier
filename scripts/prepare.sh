@@ -24,7 +24,9 @@ cat header.tab lines/* > ukbiobank.tab
 # eg 1234567_99_rois104.txt 1234567_099_rois104.txt
 for file in `ls *.txt`; do echo $file `echo $file|sed  -r 's/([0-9]{7})_([0-9]{2})_(rois104)/\1_0\2_\3/'` ; done
 
-# extract some variables from Steve's workspace
+## Additional variables
+
+# age
 cd('~/ukbiobank')
 N=length(FMRIB_info(:,1));
 
@@ -35,4 +37,30 @@ for i=1:N
 end
 
 fclose(fid);
-   
+
+# head motion
+idx=strfind(IDPnames, 'motion');
+
+IDPnames(~cellfun(@isempty, idx))
+find(~cellfun(@isempty, idx))
+
+idx=strfind(varsHeader, 'motion');
+varsHeader(~cellfun(@isempty, idx))
+
+# extract QC rfMRI motion
+cd('~/ukbiobank')
+N=length(FMRIB_info(:,1));
+coln=12;
+
+sum(FMRIB_info(:,1) == ALL_IDPs(:,1)) == N
+
+fid = fopen('more_motion.txt','w');
+
+fprintf(fid, '%s %s \n', 'eid', IDPnames{coln});
+for i=1:N   
+   fprintf(fid, '%d %f\n', ALL_IDPs(i,1), ALL_IDPs(i,coln));
+end
+
+fclose(fid);
+
+
