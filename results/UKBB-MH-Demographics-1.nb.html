@@ -11,7 +11,7 @@
 
 <meta name="author" content="Simon Schwab" />
 
-<meta name="date" content="2018-06-21" />
+<meta name="date" content="2018-06-27" />
 
 <title>UKBB-MH-Demographics-1</title>
 
@@ -171,7 +171,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">UKBB-MH-Demographics-1</h1>
 <h4 class="author"><em>Simon Schwab</em></h4>
-<h4 class="date"><em>21 June 2018</em></h4>
+<h4 class="date"><em>27 June 2018</em></h4>
 
 </div>
 
@@ -261,9 +261,9 @@ mydata$group = group</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm91bmQoc3VtbWFyeShteWRhdGEkc2V4W2lzLnBhdGldKS9OZywgZGlnaXRzID0gMilcbmBgYCJ9 -->
 <pre class="r"><code>round(summary(mydata$sex[is.pati])/Ng, digits = 2)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRmVtYWxlICAgTWFsZSBcbiAgMC41OCAgIDAuNDIgXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiRmVtYWxlICAgTWFsZSBcbiAgMC41NiAgIDAuNDQgXG4ifQ== -->
 <pre><code>Female   Male 
-  0.58   0.42 </code></pre>
+  0.56   0.44 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm91bmQoc3VtbWFyeShteWRhdGEkc2V4W2lzLnJpc2tdKS9OZywgZGlnaXRzID0gMilcbmBgYCJ9 -->
 <pre class="r"><code>round(summary(mydata$sex[is.risk])/Ng, digits = 2)</code></pre>
@@ -278,16 +278,16 @@ mydata$group = group</code></pre>
             summary(mydata$sex[is.risk])[1]),
           rep(Ng, 3))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5cdDMtc2FtcGxlIHRlc3QgZm9yIGVxdWFsaXR5IG9mIHByb3BvcnRpb25zIHdpdGhvdXQgY29udGludWl0eSBjb3JyZWN0aW9uXG5cbmRhdGE6ICBjKHN1bW1hcnkobXlkYXRhJHNleFtpcy5jdHJsXSlbMV0sIHN1bW1hcnkobXlkYXRhJHNleFtpcy5wYXRpXSlbMV0sICBvdXQgb2YgcmVwKE5nLCAzKSAgICBzdW1tYXJ5KG15ZGF0YSRzZXhbaXMucmlza10pWzFdKSBvdXQgb2YgcmVwKE5nLCAzKVxuWC1zcXVhcmVkID0gMC4wNzA5NjcsIGRmID0gMiwgcC12YWx1ZSA9IDAuOTY1MVxuYWx0ZXJuYXRpdmUgaHlwb3RoZXNpczogdHdvLnNpZGVkXG5zYW1wbGUgZXN0aW1hdGVzOlxuICAgcHJvcCAxICAgIHByb3AgMiAgICBwcm9wIDMgXG4wLjU4MDAyNzQgMC41NzU5MjM0IDAuNTczMTg3NCBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5cdDMtc2FtcGxlIHRlc3QgZm9yIGVxdWFsaXR5IG9mIHByb3BvcnRpb25zIHdpdGhvdXQgY29udGludWl0eSBjb3JyZWN0aW9uXG5cbmRhdGE6ICBjKHN1bW1hcnkobXlkYXRhJHNleFtpcy5jdHJsXSlbMV0sIHN1bW1hcnkobXlkYXRhJHNleFtpcy5wYXRpXSlbMV0sICBvdXQgb2YgcmVwKE5nLCAzKSAgICBzdW1tYXJ5KG15ZGF0YSRzZXhbaXMucmlza10pWzFdKSBvdXQgb2YgcmVwKE5nLCAzKVxuWC1zcXVhcmVkID0gMC4xOTM2NCwgZGYgPSAyLCBwLXZhbHVlID0gMC45MDc3XG5hbHRlcm5hdGl2ZSBoeXBvdGhlc2lzOiB0d28uc2lkZWRcbnNhbXBsZSBlc3RpbWF0ZXM6XG4gICBwcm9wIDEgICAgcHJvcCAyICAgIHByb3AgMyBcbjAuNTc1OTIzNCAwLjU2NDk3OTUgMC41NzMxODc0IFxuIn0= -->
 <pre><code>
     3-sample test for equality of proportions without continuity correction
 
 data:  c(summary(mydata$sex[is.ctrl])[1], summary(mydata$sex[is.pati])[1],  out of rep(Ng, 3)    summary(mydata$sex[is.risk])[1]) out of rep(Ng, 3)
-X-squared = 0.070967, df = 2, p-value = 0.9651
+X-squared = 0.19364, df = 2, p-value = 0.9077
 alternative hypothesis: two.sided
 sample estimates:
    prop 1    prop 2    prop 3 
-0.5800274 0.5759234 0.5731874 </code></pre>
+0.5759234 0.5649795 0.5731874 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -305,19 +305,19 @@ rownames(table) = c(&quot;controls&quot;, &quot;patients&quot;, &quot;at-risk&qu
 colnames(table) = c(&quot;mean&quot;, &quot;sd&quot;)
 print(table)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgIG1lYW4gICAgICAgc2RcbmNvbnRyb2xzIDYwLjY4NTM2IDcuMjY5NTMwXG5wYXRpZW50cyA2MC43MTI3MiA3LjI5MTE3MlxuYXQtcmlzayAgNjAuODY4NjcgNy4zMTUxNTVcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgIG1lYW4gICAgICAgc2RcbmNvbnRyb2xzIDYxLjY0Mjk1IDcuNzQ4NDI1XG5wYXRpZW50cyA2MS42MTY5NiA3LjQyNzcxMVxuYXQtcmlzayAgNjEuNzcyOTEgNy4yNjU4MjRcbiJ9 -->
 <pre><code>             mean       sd
-controls 60.68536 7.269530
-patients 60.71272 7.291172
-at-risk  60.86867 7.315155</code></pre>
+controls 61.64295 7.748425
+patients 61.61696 7.427711
+at-risk  61.77291 7.265824</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShhb3YoYWdlIH4gZ3JvdXAsIGRhdGEgPSBteWRhdGEpKVxuYGBgIn0= -->
 <pre class="r"><code>summary(aov(age ~ group, data = mydata))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICBEZiBTdW0gU3EgTWVhbiBTcSBGIHZhbHVlIFByKD5GKVxuZ3JvdXAgICAgICAgICAgMiAgICAgMTQgICAgNy4xNSAgIDAuMTM0ICAwLjg3NFxuUmVzaWR1YWxzICAgMjE5MCAxMTY0NDkgICA1My4xNyAgICAgICAgICAgICAgIFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICBEZiBTdW0gU3EgTWVhbiBTcSBGIHZhbHVlIFByKD5GKVxuZ3JvdXAgICAgICAgICAgMiAgICAgMTAgICAgIDUuMSAgIDAuMDkxICAwLjkxM1xuUmVzaWR1YWxzICAgMjE5MCAxMjI2NDEgICAgNTYuMCAgICAgICAgICAgICAgIFxuIn0= -->
 <pre><code>              Df Sum Sq Mean Sq F value Pr(&gt;F)
-group          2     14    7.15   0.134  0.874
-Residuals   2190 116449   53.17               </code></pre>
+group          2     10     5.1   0.091  0.913
+Residuals   2190 122641    56.0               </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -329,16 +329,16 @@ Residuals   2190 116449   53.17               </code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm91bmQoc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMuY3RybF0pL05nLCBkaWdpdHMgPSAyKVxuYGBgIn0= -->
 <pre class="r"><code>round(summary(mydata$ethnic.background[is.ctrl])/Ng, digits = 2)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgIGFzaWFuICAgICBibGFjayAgIGNoaW5lc2UgICAgIG1peGVkIG5vIGFuc3dlciAgICAgb3RoZXIgICB1bmtub3duICAgICB3aGl0ZSBcbiAgICAgMC4wMSAgICAgIDAuMDAgICAgICAwLjAwICAgICAgMC4wMSAgICAgIDAuMDAgICAgICAwLjAwICAgICAgMC4wMCAgICAgIDAuOTggXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgIGFzaWFuICAgICBibGFjayAgIGNoaW5lc2UgICAgIG1peGVkIG5vIGFuc3dlciAgICAgb3RoZXIgICB1bmtub3duICAgICB3aGl0ZSBcbiAgICAgMC4wMiAgICAgIDAuMDEgICAgICAwLjAwICAgICAgMC4wMSAgICAgIDAuMDAgICAgICAwLjAxICAgICAgMC4wMCAgICAgIDAuOTYgXG4ifQ== -->
 <pre><code>    asian     black   chinese     mixed no answer     other   unknown     white 
-     0.01      0.00      0.00      0.01      0.00      0.00      0.00      0.98 </code></pre>
+     0.02      0.01      0.00      0.01      0.00      0.01      0.00      0.96 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm91bmQoc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucGF0aV0pL05nLCBkaWdpdHMgPSAyKVxuYGBgIn0= -->
 <pre class="r"><code>round(summary(mydata$ethnic.background[is.pati])/Ng, digits = 2)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgIGFzaWFuICAgICBibGFjayAgIGNoaW5lc2UgICAgIG1peGVkIG5vIGFuc3dlciAgICAgb3RoZXIgICB1bmtub3duICAgICB3aGl0ZSBcbiAgICAgMC4wMCAgICAgIDAuMDEgICAgICAwLjAwICAgICAgMC4wMSAgICAgIDAuMDAgICAgICAwLjAwICAgICAgMC4wMCAgICAgIDAuOTggXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgIGFzaWFuICAgICBibGFjayAgIGNoaW5lc2UgICAgIG1peGVkIG5vIGFuc3dlciAgICAgb3RoZXIgICB1bmtub3duICAgICB3aGl0ZSBcbiAgICAgMC4wMSAgICAgIDAuMDEgICAgICAwLjAwICAgICAgMC4wMSAgICAgIDAuMDAgICAgICAwLjAwICAgICAgMC4wMCAgICAgIDAuOTcgXG4ifQ== -->
 <pre><code>    asian     black   chinese     mixed no answer     other   unknown     white 
-     0.00      0.01      0.00      0.01      0.00      0.00      0.00      0.98 </code></pre>
+     0.01      0.01      0.00      0.01      0.00      0.00      0.00      0.97 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm91bmQoc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucmlza10pL05nLCBkaWdpdHMgPSAyKVxuYGBgIn0= -->
 <pre class="r"><code>round(summary(mydata$ethnic.background[is.risk])/Ng, digits = 2)</code></pre>
@@ -353,16 +353,16 @@ Residuals   2190 116449   53.17               </code></pre>
             summary(mydata$ethnic.background[is.risk])[8]),
           rep(Ng, 3))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5cdDMtc2FtcGxlIHRlc3QgZm9yIGVxdWFsaXR5IG9mIHByb3BvcnRpb25zIHdpdGhvdXQgY29udGludWl0eSBjb3JyZWN0aW9uXG5cbmRhdGE6ICBjKHN1bW1hcnkobXlkYXRhJGV0aG5pYy5iYWNrZ3JvdW5kW2lzLmN0cmxdKVs4XSwgc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucGF0aV0pWzhdLCAgb3V0IG9mIHJlcChOZywgMykgICAgc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucmlza10pWzhdKSBvdXQgb2YgcmVwKE5nLCAzKVxuWC1zcXVhcmVkID0gMS4zNjcsIGRmID0gMiwgcC12YWx1ZSA9IDAuNTA0OFxuYWx0ZXJuYXRpdmUgaHlwb3RoZXNpczogdHdvLnNpZGVkXG5zYW1wbGUgZXN0aW1hdGVzOlxuICAgcHJvcCAxICAgIHByb3AgMiAgICBwcm9wIDMgXG4wLjk3ODExMjIgMC45NzgxMTIyIDAuOTY5OTA0MiBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5cdDMtc2FtcGxlIHRlc3QgZm9yIGVxdWFsaXR5IG9mIHByb3BvcnRpb25zIHdpdGhvdXQgY29udGludWl0eSBjb3JyZWN0aW9uXG5cbmRhdGE6ICBjKHN1bW1hcnkobXlkYXRhJGV0aG5pYy5iYWNrZ3JvdW5kW2lzLmN0cmxdKVs4XSwgc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucGF0aV0pWzhdLCAgb3V0IG9mIHJlcChOZywgMykgICAgc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucmlza10pWzhdKSBvdXQgb2YgcmVwKE5nLCAzKVxuWC1zcXVhcmVkID0gMC45MTQ5MiwgZGYgPSAyLCBwLXZhbHVlID0gMC42MzI5XG5hbHRlcm5hdGl2ZSBoeXBvdGhlc2lzOiB0d28uc2lkZWRcbnNhbXBsZSBlc3RpbWF0ZXM6XG4gICBwcm9wIDEgICAgcHJvcCAyICAgIHByb3AgMyBcbjAuOTYzMDY0MyAwLjk3MTI3MjIgMC45Njk5MDQyIFxuIn0= -->
 <pre><code>
     3-sample test for equality of proportions without continuity correction
 
 data:  c(summary(mydata$ethnic.background[is.ctrl])[8], summary(mydata$ethnic.background[is.pati])[8],  out of rep(Ng, 3)    summary(mydata$ethnic.background[is.risk])[8]) out of rep(Ng, 3)
-X-squared = 1.367, df = 2, p-value = 0.5048
+X-squared = 0.91492, df = 2, p-value = 0.6329
 alternative hypothesis: two.sided
 sample estimates:
    prop 1    prop 2    prop 3 
-0.9781122 0.9781122 0.9699042 </code></pre>
+0.9630643 0.9712722 0.9699042 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -375,14 +375,14 @@ sample estimates:
 <pre class="r"><code>s = &quot;College or University degree&quot;
 sum(mydata$education[is.ctrl] == s, na.rm = T) / Ng</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNDIxMzQwNlxuIn0= -->
-<pre><code>[1] 0.4213406</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNDM3NzU2NVxuIn0= -->
+<pre><code>[1] 0.4377565</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtKG15ZGF0YSRlZHVjYXRpb25baXMucGF0aV0gPT0gcywgbmEucm0gPSBUKSAvIE5nXG5gYGAifQ== -->
 <pre class="r"><code>sum(mydata$education[is.pati] == s, na.rm = T) / Ng</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNDE1ODY4N1xuIn0= -->
-<pre><code>[1] 0.4158687</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNDM2Mzg4NVxuIn0= -->
+<pre><code>[1] 0.4363885</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtKG15ZGF0YSRlZHVjYXRpb25baXMucmlza10gPT0gcywgbmEucm0gPSBUKSAvIE5nXG5gYGAifQ== -->
 <pre class="r"><code>sum(mydata$education[is.risk] == s, na.rm = T) / Ng</code></pre>
@@ -397,16 +397,16 @@ sum(mydata$education[is.ctrl] == s, na.rm = T) / Ng</code></pre>
           rep(Ng, 3)
 )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5cdDMtc2FtcGxlIHRlc3QgZm9yIGVxdWFsaXR5IG9mIHByb3BvcnRpb25zIHdpdGhvdXQgY29udGludWl0eSBjb3JyZWN0aW9uXG5cbmRhdGE6ICBjKHN1bShteWRhdGEkZWR1Y2F0aW9uW2lzLmN0cmxdID09IHMsIG5hLnJtID0gVCksIHN1bShteWRhdGEkZWR1Y2F0aW9uW2lzLnBhdGldID09ICBvdXQgb2YgcmVwKE5nLCAzKSAgICBzLCBuYS5ybSA9IFQpLCBzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5yaXNrXSA9PSBzLCBuYS5ybSA9IFQpKSBvdXQgb2YgcmVwKE5nLCAzKVxuWC1zcXVhcmVkID0gMC4wNDg3MywgZGYgPSAyLCBwLXZhbHVlID0gMC45NzU5XG5hbHRlcm5hdGl2ZSBoeXBvdGhlc2lzOiB0d28uc2lkZWRcbnNhbXBsZSBlc3RpbWF0ZXM6XG4gICBwcm9wIDEgICAgcHJvcCAyICAgIHByb3AgMyBcbjAuNDIxMzQwNiAwLjQxNTg2ODcgMC40MTcyMzY3IFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5cdDMtc2FtcGxlIHRlc3QgZm9yIGVxdWFsaXR5IG9mIHByb3BvcnRpb25zIHdpdGhvdXQgY29udGludWl0eSBjb3JyZWN0aW9uXG5cbmRhdGE6ICBjKHN1bShteWRhdGEkZWR1Y2F0aW9uW2lzLmN0cmxdID09IHMsIG5hLnJtID0gVCksIHN1bShteWRhdGEkZWR1Y2F0aW9uW2lzLnBhdGldID09ICBvdXQgb2YgcmVwKE5nLCAzKSAgICBzLCBuYS5ybSA9IFQpLCBzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5yaXNrXSA9PSBzLCBuYS5ybSA9IFQpKSBvdXQgb2YgcmVwKE5nLCAzKVxuWC1zcXVhcmVkID0gMC43ODQ5LCBkZiA9IDIsIHAtdmFsdWUgPSAwLjY3NTRcbmFsdGVybmF0aXZlIGh5cG90aGVzaXM6IHR3by5zaWRlZFxuc2FtcGxlIGVzdGltYXRlczpcbiAgIHByb3AgMSAgICBwcm9wIDIgICAgcHJvcCAzIFxuMC40Mzc3NTY1IDAuNDM2Mzg4NSAwLjQxNzIzNjcgXG4ifQ== -->
 <pre><code>
     3-sample test for equality of proportions without continuity correction
 
 data:  c(sum(mydata$education[is.ctrl] == s, na.rm = T), sum(mydata$education[is.pati] ==  out of rep(Ng, 3)    s, na.rm = T), sum(mydata$education[is.risk] == s, na.rm = T)) out of rep(Ng, 3)
-X-squared = 0.04873, df = 2, p-value = 0.9759
+X-squared = 0.7849, df = 2, p-value = 0.6754
 alternative hypothesis: two.sided
 sample estimates:
    prop 1    prop 2    prop 3 
-0.4213406 0.4158687 0.4172367 </code></pre>
+0.4377565 0.4363885 0.4172367 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -427,6 +427,28 @@ Use both right and left hands equally
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
+<div id="qc-rs-fmri-motion" class="section level2">
+<h2>QC rs-fMRI motion</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFwcGx5KG15ZGF0YSRtb3Rpb24sIG15ZGF0YSRncm91cCwgbWVhbilcbmBgYCJ9 -->
+<pre class="r"><code>tapply(mydata$motion, mydata$group, mean)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICBjb250cm9sICAgcGF0aWVudCAgICAgIHJpc2sgXG4wLjExNjA5ODUgMC4xMTk5MjE2IDAuMTE4NDkyOCBcbiJ9 -->
+<pre><code>  control   patient      risk 
+0.1160985 0.1199216 0.1184928 </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShhb3YobW90aW9uIH4gZ3JvdXAsIGRhdGEgPSBteWRhdGEpKVxuYGBgIn0= -->
+<pre class="r"><code>summary(aov(motion ~ group, data = mydata))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICBEZiBTdW0gU3EgIE1lYW4gU3EgRiB2YWx1ZSBQcig+Rilcbmdyb3VwICAgICAgICAgIDIgIDAuMDA1IDAuMDAyNzI4ICAgMC45MzEgIDAuMzk0XG5SZXNpZHVhbHMgICAyMTkwICA2LjQxNCAwLjAwMjkyOSAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code>              Df Sum Sq  Mean Sq F value Pr(&gt;F)
+group          2  0.005 0.002728   0.931  0.394
+Residuals   2190  6.414 0.002929               </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
 <div id="clinical-features" class="section level2">
 <h2>Clinical features</h2>
 <div id="anxous-feelings" class="section level3">
@@ -436,14 +458,14 @@ Use both right and left hands equally
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFwcGx5KG15ZGF0YSR3b3JyaWVyX2FueGlvdXNfZmVlbGluZ3MsIG15ZGF0YSRncm91cCwgZnVuY3Rpb24oeCkgcm91bmQoc3VtbWFyeSh4KS9OZywgZGlnaXRzID0gMikpXG5gYGAifQ== -->
 <pre class="r"><code>tapply(mydata$worrier_anxious_feelings, mydata$group, function(x) round(summary(x)/Ng, digits = 2))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgICAgICAgIE5vICAgICAgICAgICAgICAgICAgWWVzIFxuICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMDIgICAgICAgICAgICAgICAgIDAuNTIgICAgICAgICAgICAgICAgIDAuNDYgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgICAgICAgICBObyAgICAgICAgICAgICAgICAgIFllcyBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAyICAgICAgICAgICAgICAgICAwLjMzICAgICAgICAgICAgICAgICAwLjY0IFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICAgICAgICAgTm8gICAgICAgICAgICAgICAgICBZZXMgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMiAgICAgICAgICAgICAgICAgMC40NSAgICAgICAgICAgICAgICAgMC41MyBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgICAgICAgIE5vICAgICAgICAgICAgICAgICAgWWVzIFxuICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMDIgICAgICAgICAgICAgICAgIDAuNTIgICAgICAgICAgICAgICAgIDAuNDYgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgICAgICAgICBObyAgICAgICAgICAgICAgICAgIFllcyBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAzICAgICAgICAgICAgICAgICAwLjM1ICAgICAgICAgICAgICAgICAwLjYzIFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICAgICAgICAgTm8gICAgICAgICAgICAgICAgICBZZXMgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMiAgICAgICAgICAgICAgICAgMC40NSAgICAgICAgICAgICAgICAgMC41MyBcbiJ9 -->
 <pre><code>$control
 Prefer not to answer          Do not know                   No                  Yes 
                 0.00                 0.02                 0.52                 0.46 
 
 $patient
 Prefer not to answer          Do not know                   No                  Yes 
-                0.00                 0.02                 0.33                 0.64 
+                0.00                 0.03                 0.35                 0.63 
 
 $risk
 Prefer not to answer          Do not know                   No                  Yes 
@@ -459,14 +481,14 @@ Prefer not to answer          Do not know                   No                  
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFwcGx5KG15ZGF0YSRzZWVuX2dwLCBteWRhdGEkZ3JvdXAsIGZ1bmN0aW9uKHgpIHJvdW5kKHN1bW1hcnkoeCkvTmcsIGRpZ2l0cyA9IDIpKVxuYGBgIn0= -->
 <pre class="r"><code>tapply(mydata$seen_gp, mydata$group, function(x) round(summary(x)/Ng, digits = 2))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgICAgICAgIE5vICAgICAgICAgICAgICAgICAgWWVzIFxuICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuODcgICAgICAgICAgICAgICAgIDAuMTIgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgICAgICAgICBObyAgICAgICAgICAgICAgICAgIFllcyBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjE0ICAgICAgICAgICAgICAgICAwLjg2IFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICAgICAgICAgTm8gICAgICAgICAgICAgICAgICBZZXMgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC43NCAgICAgICAgICAgICAgICAgMC4yNSBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgICAgICAgIE5vICAgICAgICAgICAgICAgICAgWWVzIFxuICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuODYgICAgICAgICAgICAgICAgIDAuMTMgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgICAgICAgICBObyAgICAgICAgICAgICAgICAgIFllcyBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjE1ICAgICAgICAgICAgICAgICAwLjg1IFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICAgICAgICAgTm8gICAgICAgICAgICAgICAgICBZZXMgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC43NCAgICAgICAgICAgICAgICAgMC4yNSBcbiJ9 -->
 <pre><code>$control
 Prefer not to answer          Do not know                   No                  Yes 
-                0.00                 0.00                 0.87                 0.12 
+                0.00                 0.00                 0.86                 0.13 
 
 $patient
 Prefer not to answer          Do not know                   No                  Yes 
-                0.00                 0.00                 0.14                 0.86 
+                0.00                 0.00                 0.15                 0.85 
 
 $risk
 Prefer not to answer          Do not know                   No                  Yes 
@@ -482,14 +504,14 @@ Prefer not to answer          Do not know                   No                  
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFwcGx5KG15ZGF0YSRzZWVuX3BzeWNoaWF0cmlzdCwgbXlkYXRhJGdyb3VwLCBmdW5jdGlvbih4KSByb3VuZChzdW1tYXJ5KHgpL05nLCBkaWdpdHMgPSAyKSlcbmBgYCJ9 -->
 <pre class="r"><code>tapply(mydata$seen_psychiatrist, mydata$group, function(x) round(summary(x)/Ng, digits = 2))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgICAgICAgIE5vICAgICAgICAgICAgICAgICAgWWVzIFxuICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuOTcgICAgICAgICAgICAgICAgIDAuMDMgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgICAgICAgICBObyAgICAgICAgICAgICAgICAgIFllcyBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjc2ICAgICAgICAgICAgICAgICAwLjI0IFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICAgICAgICAgTm8gICAgICAgICAgICAgICAgICBZZXMgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMSAgICAgICAgICAgICAgICAgMC45MCAgICAgICAgICAgICAgICAgMC4wOSBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgICAgICAgIE5vICAgICAgICAgICAgICAgICAgWWVzIFxuICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuOTYgICAgICAgICAgICAgICAgIDAuMDQgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgICAgICAgICBObyAgICAgICAgICAgICAgICAgIFllcyBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjc1ICAgICAgICAgICAgICAgICAwLjI1IFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICAgICAgICAgTm8gICAgICAgICAgICAgICAgICBZZXMgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMSAgICAgICAgICAgICAgICAgMC45MCAgICAgICAgICAgICAgICAgMC4wOSBcbiJ9 -->
 <pre><code>$control
 Prefer not to answer          Do not know                   No                  Yes 
-                0.00                 0.00                 0.97                 0.03 
+                0.00                 0.00                 0.96                 0.04 
 
 $patient
 Prefer not to answer          Do not know                   No                  Yes 
-                0.00                 0.00                 0.76                 0.24 
+                0.00                 0.00                 0.75                 0.25 
 
 $risk
 Prefer not to answer          Do not know                   No                  Yes 
@@ -506,14 +528,14 @@ Prefer not to answer          Do not know                   No                  
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFwcGx5KG15ZGF0YSRNRC5zdGF0dXMsIG15ZGF0YSRncm91cCwgZnVuY3Rpb24oeCkgcm91bmQoc3VtbWFyeSh4KS9OZywgZGlnaXRzID0gMikpXG5gYGAifQ== -->
 <pre class="r"><code>tapply(mydata$MD.status, mydata$group, function(x) round(summary(x)/Ng, digits = 2))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcbm1vZGVyYXRlICAgICBub25lICAgc2V2ZXJlICAgc2luZ2xlIFxuICAgICAgIDAgICAgICAgIDEgICAgICAgIDAgICAgICAgIDAgXG5cbiRwYXRpZW50XG5tb2RlcmF0ZSAgICAgbm9uZSAgIHNldmVyZSAgIHNpbmdsZSBcbiAgICAwLjUyICAgICAwLjAwICAgICAwLjI1ICAgICAwLjIzIFxuXG4kcmlza1xubW9kZXJhdGUgICAgIG5vbmUgICBzZXZlcmUgICBzaW5nbGUgXG4gICAgICAgMCAgICAgICAgMSAgICAgICAgMCAgICAgICAgMCBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcbm1vZGVyYXRlICAgICBub25lICAgc2V2ZXJlICAgc2luZ2xlIFxuICAgICAgIDAgICAgICAgIDEgICAgICAgIDAgICAgICAgIDAgXG5cbiRwYXRpZW50XG5tb2RlcmF0ZSAgICAgbm9uZSAgIHNldmVyZSAgIHNpbmdsZSBcbiAgICAwLjUwICAgICAwLjAwICAgICAwLjI3ICAgICAwLjIzIFxuXG4kcmlza1xubW9kZXJhdGUgICAgIG5vbmUgICBzZXZlcmUgICBzaW5nbGUgXG4gICAgICAgMCAgICAgICAgMSAgICAgICAgMCAgICAgICAgMCBcbiJ9 -->
 <pre><code>$control
 moderate     none   severe   single 
        0        1        0        0 
 
 $patient
 moderate     none   severe   single 
-    0.52     0.00     0.25     0.23 
+    0.50     0.00     0.27     0.23 
 
 $risk
 moderate     none   severe   single 
@@ -532,9 +554,9 @@ x[1,]=round(c(sum(mydata$md.family[is.ctrl]), sum(mydata$md.family[is.pati]), su
 colnames(x)=c(&quot;Control&quot;,&quot;Patient&quot;,&quot;at-risk&quot;)
 print(x)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICBDb250cm9sIFBhdGllbnQgYXQtcmlza1xuWzEsXSAgICAgICAwICAgIDAuMjYgICAgICAgMVxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBDb250cm9sIFBhdGllbnQgYXQtcmlza1xuWzEsXSAgICAgICAwICAgIDAuMjcgICAgICAgMVxuIn0= -->
 <pre><code>     Control Patient at-risk
-[1,]       0    0.26       1</code></pre>
+[1,]       0    0.27       1</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -573,9 +595,9 @@ x[1,]=round(c(sum(mydata$illness_depression[is.ctrl]),
 colnames(x)=c(&quot;Control&quot;,&quot;Patient&quot;,&quot;at-risk&quot;)
 print(x)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICBDb250cm9sIFBhdGllbnQgYXQtcmlza1xuWzEsXSAgICAgICAwICAgIDAuMjggICAgMC4wOVxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBDb250cm9sIFBhdGllbnQgYXQtcmlza1xuWzEsXSAgICAgICAwICAgICAwLjMgICAgMC4wOVxuIn0= -->
 <pre><code>     Control Patient at-risk
-[1,]       0    0.28    0.09</code></pre>
+[1,]       0     0.3    0.09</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -609,14 +631,14 @@ print(x)</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFwcGx5KG15ZGF0YSRvdmVyYWxsX2hlYWx0aCwgbXlkYXRhJGdyb3VwLCBmdW5jdGlvbih4KSByb3VuZChzdW1tYXJ5KHgpL05nLCBkaWdpdHMgPSAyKSlcbmBgYCJ9 -->
 <pre class="r"><code>tapply(mydata$overall_health, mydata$group, function(x) round(summary(x)/Ng, digits = 2))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgRXhjZWxsZW50ICAgICAgICAgICAgICAgICBHb29kICAgICAgICAgICAgICAgICBGYWlyICAgICAgICAgICAgICAgICBQb29yIFxuICAgICAgICAgICAgICAgICAwLjAgICAgICAgICAgICAgICAgICAwLjAgICAgICAgICAgICAgICAgICAwLjMgICAgICAgICAgICAgICAgICAwLjcgICAgICAgICAgICAgICAgICAwLjAgICAgICAgICAgICAgICAgICAwLjAgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgIEV4Y2VsbGVudCAgICAgICAgICAgICAgICAgR29vZCAgICAgICAgICAgICAgICAgRmFpciAgICAgICAgICAgICAgICAgUG9vciBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjE1ICAgICAgICAgICAgICAgICAwLjYxICAgICAgICAgICAgICAgICAwLjIwICAgICAgICAgICAgICAgICAwLjA0IFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICBFeGNlbGxlbnQgICAgICAgICAgICAgICAgIEdvb2QgICAgICAgICAgICAgICAgIEZhaXIgICAgICAgICAgICAgICAgIFBvb3IgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4xOCAgICAgICAgICAgICAgICAgMC42NCAgICAgICAgICAgICAgICAgMC4xNSAgICAgICAgICAgICAgICAgMC4wMiBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgRXhjZWxsZW50ICAgICAgICAgICAgICAgICBHb29kICAgICAgICAgICAgICAgICBGYWlyICAgICAgICAgICAgICAgICBQb29yIFxuICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMjUgICAgICAgICAgICAgICAgIDAuNjQgICAgICAgICAgICAgICAgIDAuMTAgICAgICAgICAgICAgICAgIDAuMDEgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgIEV4Y2VsbGVudCAgICAgICAgICAgICAgICAgR29vZCAgICAgICAgICAgICAgICAgRmFpciAgICAgICAgICAgICAgICAgUG9vciBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjE3ICAgICAgICAgICAgICAgICAwLjU5ICAgICAgICAgICAgICAgICAwLjIxICAgICAgICAgICAgICAgICAwLjAzIFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICBFeGNlbGxlbnQgICAgICAgICAgICAgICAgIEdvb2QgICAgICAgICAgICAgICAgIEZhaXIgICAgICAgICAgICAgICAgIFBvb3IgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4xOCAgICAgICAgICAgICAgICAgMC42NCAgICAgICAgICAgICAgICAgMC4xNSAgICAgICAgICAgICAgICAgMC4wMiBcbiJ9 -->
 <pre><code>$control
 Prefer not to answer          Do not know            Excellent                 Good                 Fair                 Poor 
-                 0.0                  0.0                  0.3                  0.7                  0.0                  0.0 
+                0.00                 0.00                 0.25                 0.64                 0.10                 0.01 
 
 $patient
 Prefer not to answer          Do not know            Excellent                 Good                 Fair                 Poor 
-                0.00                 0.00                 0.15                 0.61                 0.20                 0.04 
+                0.00                 0.00                 0.17                 0.59                 0.21                 0.03 
 
 $risk
 Prefer not to answer          Do not know            Excellent                 Good                 Fair                 Poor 
@@ -632,14 +654,14 @@ Prefer not to answer          Do not know            Excellent                 G
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFwcGx5KG15ZGF0YSRsb25nc3RhbmRpbmdfaWxsbmVzcywgbXlkYXRhJGdyb3VwLCBmdW5jdGlvbih4KSByb3VuZChzdW1tYXJ5KHgpL05nLCBkaWdpdHMgPSAyKSlcbmBgYCJ9 -->
 <pre class="r"><code>tapply(mydata$longstanding_illness, mydata$group, function(x) round(summary(x)/Ng, digits = 2))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgICAgICAgIE5vICAgICAgICAgICAgICAgICAgWWVzIFxuICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAgIDEgICAgICAgICAgICAgICAgICAgIDAgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgICAgICAgICBObyAgICAgICAgICAgICAgICAgIFllcyBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAyICAgICAgICAgICAgICAgICAwLjY1ICAgICAgICAgICAgICAgICAwLjMzIFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICAgICAgICAgTm8gICAgICAgICAgICAgICAgICBZZXMgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMSAgICAgICAgICAgICAgICAgMC42OCAgICAgICAgICAgICAgICAgMC4zMSBcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJGNvbnRyb2xcblByZWZlciBub3QgdG8gYW5zd2VyICAgICAgICAgIERvIG5vdCBrbm93ICAgICAgICAgICAgICAgICAgIE5vICAgICAgICAgICAgICAgICAgWWVzIFxuICAgICAgICAgICAgICAgIDAuMDAgICAgICAgICAgICAgICAgIDAuMDEgICAgICAgICAgICAgICAgIDAuNzkgICAgICAgICAgICAgICAgIDAuMjAgXG5cbiRwYXRpZW50XG5QcmVmZXIgbm90IHRvIGFuc3dlciAgICAgICAgICBEbyBub3Qga25vdyAgICAgICAgICAgICAgICAgICBObyAgICAgICAgICAgICAgICAgIFllcyBcbiAgICAgICAgICAgICAgICAwLjAwICAgICAgICAgICAgICAgICAwLjAyICAgICAgICAgICAgICAgICAwLjY2ICAgICAgICAgICAgICAgICAwLjMyIFxuXG4kcmlza1xuUHJlZmVyIG5vdCB0byBhbnN3ZXIgICAgICAgICAgRG8gbm90IGtub3cgICAgICAgICAgICAgICAgICAgTm8gICAgICAgICAgICAgICAgICBZZXMgXG4gICAgICAgICAgICAgICAgMC4wMCAgICAgICAgICAgICAgICAgMC4wMSAgICAgICAgICAgICAgICAgMC42OCAgICAgICAgICAgICAgICAgMC4zMSBcbiJ9 -->
 <pre><code>$control
 Prefer not to answer          Do not know                   No                  Yes 
-                   0                    0                    1                    0 
+                0.00                 0.01                 0.79                 0.20 
 
 $patient
 Prefer not to answer          Do not know                   No                  Yes 
-                0.00                 0.02                 0.65                 0.33 
+                0.00                 0.02                 0.66                 0.32 
 
 $risk
 Prefer not to answer          Do not know                   No                  Yes 
@@ -656,7 +678,7 @@ Prefer not to answer          Do not know                   No                  
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMobXlkYXRhKVxuYGBgIn0= -->
 <pre class="r"><code>names(mydata)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcImVpZFwiICAgICAgICAgICAgICAgICAgICAgIFwic2V4XCIgICAgICAgICAgICAgICAgICAgICAgXCJhZ2VcIiAgICAgICAgICAgICAgICAgICAgICBcImV0aG5pYy5iYWNrZ3JvdW5kXCIgICAgICAgXG4gWzVdIFwiZWR1Y2F0aW9uXCIgICAgICAgICAgICAgICAgXCJoYW5kZWRuZXNzXCIgICAgICAgICAgICAgICBcIndvcnJpZXJfYW54aW91c19mZWVsaW5nc1wiIFwic2Vlbl9ncFwiICAgICAgICAgICAgICAgICBcbiBbOV0gXCJzZWVuX3BzeWNoaWF0cmlzdFwiICAgICAgICBcIk1ELmFsbFwiICAgICAgICAgICAgICAgICAgIFwiTUQuc2luZ2xlXCIgICAgICAgICAgICAgICAgXCJNRC5tb2RlcmF0ZVwiICAgICAgICAgICAgIFxuWzEzXSBcIk1ELnNldmVyZVwiICAgICAgICAgICAgICAgIFwiTUQuc3RhdHVzXCIgICAgICAgICAgICAgICAgXCJtZC5mYXRoZXJcIiAgICAgICAgICAgICAgICBcIm1kLm1vdGhlclwiICAgICAgICAgICAgICAgXG5bMTddIFwibWQuc2libGluZ3NcIiAgICAgICAgICAgICAgXCJtZC5mYW1pbHlcIiAgICAgICAgICAgICAgICBcImlsbG5lc3NfZGVwcmVzc2lvblwiICAgICAgIFwiaWxsbmVzc19hbnhpZXR5XCIgICAgICAgICBcblsyMV0gXCJpbGxuZXNzX25ldXJvdHJhdW1hXCIgICAgICBcImlsbG5lc3NfcHN5Y2hpYXRyaWNcIiAgICAgIFwiaWxsbmVzc19uZXVyb2RlZ2VuXCIgICAgICAgXCJpbGxuZXNzX01TXCIgICAgICAgICAgICAgIFxuWzI1XSBcImlsbG5lc3NfcGFya2luc29uXCIgICAgICAgIFwiaWxsbmVzc19kZW1lbnRpYVwiICAgICAgICAgXCJpbGxuZXNzX2hlYWRpbmp1cnlcIiAgICAgICBcImlsbG5lc3Nfc2NoaXpvcGhyXCIgICAgICAgXG5bMjldIFwiaWxsbmVzc19iaXBvbGFyXCIgICAgICAgICAgXCJpbGxuZXNzX3N0cm9rZVwiICAgICAgICAgICBcImlsbG5lc3NfZGVteWVsaW5cIiAgICAgICAgIFwiaWxsbmVzc19ndWlsbGFpblwiICAgICAgICBcblszM10gXCJGNDAwXCIgICAgICAgICAgICAgICAgICAgICBcIkY0MDFcIiAgICAgICAgICAgICAgICAgICAgIFwiRjQwMlwiICAgICAgICAgICAgICAgICAgICAgXCJGNDA4XCIgICAgICAgICAgICAgICAgICAgIFxuWzM3XSBcIkY0MDlcIiAgICAgICAgICAgICAgICAgICAgIFwiRjQxMFwiICAgICAgICAgICAgICAgICAgICAgXCJGNDExXCIgICAgICAgICAgICAgICAgICAgICBcIkY0MTJcIiAgICAgICAgICAgICAgICAgICAgXG5bNDFdIFwiRjQxM1wiICAgICAgICAgICAgICAgICAgICAgXCJGNDE4XCIgICAgICAgICAgICAgICAgICAgICBcIkY0MTlcIiAgICAgICAgICAgICAgICAgICAgIFwiRjMyMFwiICAgICAgICAgICAgICAgICAgICBcbls0NV0gXCJGMzIxXCIgICAgICAgICAgICAgICAgICAgICBcIkYzMjJcIiAgICAgICAgICAgICAgICAgICAgIFwiRjMyM1wiICAgICAgICAgICAgICAgICAgICAgXCJGMzI4XCIgICAgICAgICAgICAgICAgICAgIFxuWzQ5XSBcIkYzMjlcIiAgICAgICAgICAgICAgICAgICAgIFwiRjMzMFwiICAgICAgICAgICAgICAgICAgICAgXCJGMzMxXCIgICAgICAgICAgICAgICAgICAgICBcIkYzMzJcIiAgICAgICAgICAgICAgICAgICAgXG5bNTNdIFwiRjMzM1wiICAgICAgICAgICAgICAgICAgICAgXCJGMzM0XCIgICAgICAgICAgICAgICAgICAgICBcIkYzMzhcIiAgICAgICAgICAgICAgICAgICAgIFwiRjMzOVwiICAgICAgICAgICAgICAgICAgICBcbls1N10gXCJJQ0RBbnhpZXR5RGlhZ1wiICAgICAgICAgICBcIklDRERlcHJEaWFnXCIgICAgICAgICAgICAgIFwiSUNETWVudGFsRGlhZ1wiICAgICAgICAgICAgXCJJQ0RPdGhlck1lbnRhbERpYWdcIiAgICAgIFxuWzYxXSBcIklDRE5ldXJvRGlhZ1wiICAgICAgICAgICAgIFwiSUNESGVhZEluanVyeVwiICAgICAgICAgICAgXCJoYXNmTVJJXCIgICAgICAgICAgICAgICAgICBcIm92ZXJhbGxfaGVhbHRoXCIgICAgICAgICAgXG5bNjVdIFwibG9uZ3N0YW5kaW5nX2lsbG5lc3NcIiAgICAgXCJuZXVyb0V4Y2x1c2lvblwiICAgICAgICAgICBcImlzSGVhbHRoeVwiICAgICAgICAgICAgICAgIFwicmlnaHRIYW5kZWRcIiAgICAgICAgICAgICBcbls2OV0gXCJpcy5NRFwiICAgICAgICAgICAgICAgICAgICBcImlzLnJpc2tcIiAgICAgICAgICAgICAgICAgIFwiaXMuY29udHJvbFwiICAgICAgICAgICAgICAgXCJncm91cFwiICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcImVpZFwiICAgICAgICAgICAgICAgICAgICAgIFwic2V4XCIgICAgICAgICAgICAgICAgICAgICAgXCJhZ2VcIiAgICAgICAgICAgICAgICAgICAgICBcImV0aG5pYy5iYWNrZ3JvdW5kXCIgICAgICAgXG4gWzVdIFwiZWR1Y2F0aW9uXCIgICAgICAgICAgICAgICAgXCJoYW5kZWRuZXNzXCIgICAgICAgICAgICAgICBcIndvcnJpZXJfYW54aW91c19mZWVsaW5nc1wiIFwic2Vlbl9ncFwiICAgICAgICAgICAgICAgICBcbiBbOV0gXCJzZWVuX3BzeWNoaWF0cmlzdFwiICAgICAgICBcIk1ELmFsbFwiICAgICAgICAgICAgICAgICAgIFwiTUQuc2luZ2xlXCIgICAgICAgICAgICAgICAgXCJNRC5tb2RlcmF0ZVwiICAgICAgICAgICAgIFxuWzEzXSBcIk1ELnNldmVyZVwiICAgICAgICAgICAgICAgIFwiTUQuc3RhdHVzXCIgICAgICAgICAgICAgICAgXCJtZC5mYXRoZXJcIiAgICAgICAgICAgICAgICBcIm1kLm1vdGhlclwiICAgICAgICAgICAgICAgXG5bMTddIFwibWQuc2libGluZ3NcIiAgICAgICAgICAgICAgXCJtZC5mYW1pbHlcIiAgICAgICAgICAgICAgICBcImlsbG5lc3NfZGVwcmVzc2lvblwiICAgICAgIFwiaWxsbmVzc19hbnhpZXR5XCIgICAgICAgICBcblsyMV0gXCJpbGxuZXNzX25ldXJvdHJhdW1hXCIgICAgICBcImlsbG5lc3NfcHN5Y2hpYXRyaWNcIiAgICAgIFwiaWxsbmVzc19uZXVyb2RlZ2VuXCIgICAgICAgXCJpbGxuZXNzX01TXCIgICAgICAgICAgICAgIFxuWzI1XSBcImlsbG5lc3NfcGFya2luc29uXCIgICAgICAgIFwiaWxsbmVzc19kZW1lbnRpYVwiICAgICAgICAgXCJpbGxuZXNzX2hlYWRpbmp1cnlcIiAgICAgICBcImlsbG5lc3Nfc2NoaXpvcGhyXCIgICAgICAgXG5bMjldIFwiaWxsbmVzc19iaXBvbGFyXCIgICAgICAgICAgXCJpbGxuZXNzX3N0cm9rZVwiICAgICAgICAgICBcImlsbG5lc3NfZGVteWVsaW5cIiAgICAgICAgIFwiaWxsbmVzc19ndWlsbGFpblwiICAgICAgICBcblszM10gXCJGNDAwXCIgICAgICAgICAgICAgICAgICAgICBcIkY0MDFcIiAgICAgICAgICAgICAgICAgICAgIFwiRjQwMlwiICAgICAgICAgICAgICAgICAgICAgXCJGNDA4XCIgICAgICAgICAgICAgICAgICAgIFxuWzM3XSBcIkY0MDlcIiAgICAgICAgICAgICAgICAgICAgIFwiRjQxMFwiICAgICAgICAgICAgICAgICAgICAgXCJGNDExXCIgICAgICAgICAgICAgICAgICAgICBcIkY0MTJcIiAgICAgICAgICAgICAgICAgICAgXG5bNDFdIFwiRjQxM1wiICAgICAgICAgICAgICAgICAgICAgXCJGNDE4XCIgICAgICAgICAgICAgICAgICAgICBcIkY0MTlcIiAgICAgICAgICAgICAgICAgICAgIFwiRjMyMFwiICAgICAgICAgICAgICAgICAgICBcbls0NV0gXCJGMzIxXCIgICAgICAgICAgICAgICAgICAgICBcIkYzMjJcIiAgICAgICAgICAgICAgICAgICAgIFwiRjMyM1wiICAgICAgICAgICAgICAgICAgICAgXCJGMzI4XCIgICAgICAgICAgICAgICAgICAgIFxuWzQ5XSBcIkYzMjlcIiAgICAgICAgICAgICAgICAgICAgIFwiRjMzMFwiICAgICAgICAgICAgICAgICAgICAgXCJGMzMxXCIgICAgICAgICAgICAgICAgICAgICBcIkYzMzJcIiAgICAgICAgICAgICAgICAgICAgXG5bNTNdIFwiRjMzM1wiICAgICAgICAgICAgICAgICAgICAgXCJGMzM0XCIgICAgICAgICAgICAgICAgICAgICBcIkYzMzhcIiAgICAgICAgICAgICAgICAgICAgIFwiRjMzOVwiICAgICAgICAgICAgICAgICAgICBcbls1N10gXCJJQ0RBbnhpZXR5RGlhZ1wiICAgICAgICAgICBcIklDRERlcHJEaWFnXCIgICAgICAgICAgICAgIFwiSUNETWVudGFsRGlhZ1wiICAgICAgICAgICAgXCJJQ0RPdGhlck1lbnRhbERpYWdcIiAgICAgIFxuWzYxXSBcIklDRE5ldXJvRGlhZ1wiICAgICAgICAgICAgIFwiSUNESGVhZEluanVyeVwiICAgICAgICAgICAgXCJoYXNmTVJJXCIgICAgICAgICAgICAgICAgICBcIm1vdGlvblwiICAgICAgICAgICAgICAgICAgXG5bNjVdIFwib3ZlcmFsbF9oZWFsdGhcIiAgICAgICAgICAgXCJsb25nc3RhbmRpbmdfaWxsbmVzc1wiICAgICBcIm5ldXJvRXhjbHVzaW9uXCIgICAgICAgICAgIFwiaXNIZWFsdGh5XCIgICAgICAgICAgICAgICBcbls2OV0gXCJyaWdodEhhbmRlZFwiICAgICAgICAgICAgICBcImlzLk1EXCIgICAgICAgICAgICAgICAgICAgIFwiaXMucmlza1wiICAgICAgICAgICAgICAgICAgXCJpcy5jb250cm9sXCIgICAgICAgICAgICAgIFxuWzczXSBcImdyb3VwXCIgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
 <pre><code> [1] &quot;eid&quot;                      &quot;sex&quot;                      &quot;age&quot;                      &quot;ethnic.background&quot;       
  [5] &quot;education&quot;                &quot;handedness&quot;               &quot;worrier_anxious_feelings&quot; &quot;seen_gp&quot;                 
  [9] &quot;seen_psychiatrist&quot;        &quot;MD.all&quot;                   &quot;MD.single&quot;                &quot;MD.moderate&quot;             
@@ -672,16 +694,17 @@ Prefer not to answer          Do not know                   No                  
 [49] &quot;F329&quot;                     &quot;F330&quot;                     &quot;F331&quot;                     &quot;F332&quot;                    
 [53] &quot;F333&quot;                     &quot;F334&quot;                     &quot;F338&quot;                     &quot;F339&quot;                    
 [57] &quot;ICDAnxietyDiag&quot;           &quot;ICDDeprDiag&quot;              &quot;ICDMentalDiag&quot;            &quot;ICDOtherMentalDiag&quot;      
-[61] &quot;ICDNeuroDiag&quot;             &quot;ICDHeadInjury&quot;            &quot;hasfMRI&quot;                  &quot;overall_health&quot;          
-[65] &quot;longstanding_illness&quot;     &quot;neuroExclusion&quot;           &quot;isHealthy&quot;                &quot;rightHanded&quot;             
-[69] &quot;is.MD&quot;                    &quot;is.risk&quot;                  &quot;is.control&quot;               &quot;group&quot;                   </code></pre>
+[61] &quot;ICDNeuroDiag&quot;             &quot;ICDHeadInjury&quot;            &quot;hasfMRI&quot;                  &quot;motion&quot;                  
+[65] &quot;overall_health&quot;           &quot;longstanding_illness&quot;     &quot;neuroExclusion&quot;           &quot;isHealthy&quot;               
+[69] &quot;rightHanded&quot;              &quot;is.MD&quot;                    &quot;is.risk&quot;                  &quot;is.control&quot;              
+[73] &quot;group&quot;                   </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiVUtCQi1NSC1EZW1vZ3JhcGhpY3MtMSIKYXV0aG9yOiAiU2ltb24gU2Nod2FiIgpkYXRlOiAiMjEgSnVuZSAyMDE4IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIyBMaWJyYXJpZXMKYGBge3IgbWVzc2FnZT1GQUxTRX0KbGlicmFyeShnZ3Bsb3QyKQpsaWJyYXJ5KGNvd3Bsb3QpCmxpYnJhcnkodGVzdGl0KQpgYGAKCiMjIFZhcmlhYmxlcwpgYGB7cn0KUEFUSF9IT01FID0gJy9ob21lL3NpbW9uJwpQQVRIX1BST0ogPSBmaWxlLnBhdGgoUEFUSF9IT01FLCAnRGF0YScsICdVS0JCLU1IJykgIyBQcm9qZWN0IHBhdGgKUEFUSF9SRVNVTFRTID0gZmlsZS5wYXRoKFBBVEhfUFJPSiwgJ3Jlc3VsdHMnKQpQQVRIX0ZJR1MgPSBmaWxlLnBhdGgoUEFUSF9QUk9KLCAnZmlndXJlcycpClBBVEhfVUtCQiA9IGZpbGUucGF0aChQQVRIX0hPTUUsICdEcml2ZScsICd1a2Jpb2JhbmsnKQpgYGAKCiMjIExvYWQgc3ViamVjdCBpbmZvCmBgYHtyfQpsb2FkKGZpbGUgPSBmaWxlLnBhdGgoUEFUSF9VS0JCLCAnVUtCQi1NSC5SRGF0YScpKQpteWRhdGEgPSBNWVVLQkIuMS5tYXRjaGVkCk49bnJvdyhteWRhdGEpCk5nPU4vMwoKYXNzZXJ0KHN1bShteWRhdGEkaGFzZk1SSSkgPT0gTikKCmlzLmN0cmwgPSBteWRhdGEkaXMuY29udHJvbAppcy5wYXRpID0gbXlkYXRhJGlzLk1ECmlzLnJpc2sgPSBteWRhdGEkaXMucmlzawoKIyBjcmVhdGUgZ3JvdXAgdmFyaWFibGUKZ3JvdXAgPSByZXAoTkEsIE4pCmdyb3VwW2lzLmN0cmxdID0gImNvbnRyb2wiCmdyb3VwW2lzLnBhdGldID0gInBhdGllbnQiCmdyb3VwW2lzLnJpc2tdID0gInJpc2siCmdyb3VwID0gYXMuZmFjdG9yKGdyb3VwKQpteWRhdGEkZ3JvdXAgPSBncm91cApgYGAKCiMjIEdyb3VwIHNpemVzCmBgYHtyfQpzcHJpbnRmKCdUb3RhbCBOPSVkJyxOKQpzdW1tYXJ5KG15ZGF0YSRncm91cCkKYGBgCgojIyBHZW5kZXIKYGBge3J9CnJvdW5kKHN1bW1hcnkobXlkYXRhJHNleFtpcy5jdHJsXSkvTmcsIGRpZ2l0cyA9IDIpCnJvdW5kKHN1bW1hcnkobXlkYXRhJHNleFtpcy5wYXRpXSkvTmcsIGRpZ2l0cyA9IDIpCnJvdW5kKHN1bW1hcnkobXlkYXRhJHNleFtpcy5yaXNrXSkvTmcsIGRpZ2l0cyA9IDIpCgpwcm9wLnRlc3QoYyhzdW1tYXJ5KG15ZGF0YSRzZXhbaXMuY3RybF0pWzFdLAogICAgICAgICAgICBzdW1tYXJ5KG15ZGF0YSRzZXhbaXMucGF0aV0pWzFdLAogICAgICAgICAgICBzdW1tYXJ5KG15ZGF0YSRzZXhbaXMucmlza10pWzFdKSwKICAgICAgICAgIHJlcChOZywgMykpCmBgYAoKIyMgQWdlCmBgYHtyfQp0YWJsZT1hcnJheShOQSwgZGltPWMoMywyKSkKCnRhYmxlWzEsMV0gPSBtZWFuKG15ZGF0YSRhZ2VbaXMuY3RybF0pOyB0YWJsZVsxLDJdID0gc2QobXlkYXRhJGFnZVtpcy5jdHJsXSk7CnRhYmxlWzIsMV0gPSBtZWFuKG15ZGF0YSRhZ2VbaXMucGF0aV0pOyB0YWJsZVsyLDJdID0gc2QobXlkYXRhJGFnZVtpcy5wYXRpXSk7CnRhYmxlWzMsMV0gPSBtZWFuKG15ZGF0YSRhZ2VbaXMucmlza10pOyB0YWJsZVszLDJdID0gc2QobXlkYXRhJGFnZVtpcy5yaXNrXSk7CnJvd25hbWVzKHRhYmxlKSA9IGMoImNvbnRyb2xzIiwgInBhdGllbnRzIiwgImF0LXJpc2siKQpjb2xuYW1lcyh0YWJsZSkgPSBjKCJtZWFuIiwgInNkIikKcHJpbnQodGFibGUpCgpzdW1tYXJ5KGFvdihhZ2UgfiBncm91cCwgZGF0YSA9IG15ZGF0YSkpCmBgYAoKIyMgRXRobmljIGJhY2tncm91bmQKYGBge3J9CnJvdW5kKHN1bW1hcnkobXlkYXRhJGV0aG5pYy5iYWNrZ3JvdW5kW2lzLmN0cmxdKS9OZywgZGlnaXRzID0gMikKcm91bmQoc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucGF0aV0pL05nLCBkaWdpdHMgPSAyKQpyb3VuZChzdW1tYXJ5KG15ZGF0YSRldGhuaWMuYmFja2dyb3VuZFtpcy5yaXNrXSkvTmcsIGRpZ2l0cyA9IDIpCgpwcm9wLnRlc3QoYyhzdW1tYXJ5KG15ZGF0YSRldGhuaWMuYmFja2dyb3VuZFtpcy5jdHJsXSlbOF0sCiAgICAgICAgICAgIHN1bW1hcnkobXlkYXRhJGV0aG5pYy5iYWNrZ3JvdW5kW2lzLnBhdGldKVs4XSwKICAgICAgICAgICAgc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucmlza10pWzhdKSwKICAgICAgICAgIHJlcChOZywgMykpCmBgYAoKIyMgRWR1Y2F0aW9uCmBgYHtyfQpzID0gIkNvbGxlZ2Ugb3IgVW5pdmVyc2l0eSBkZWdyZWUiCnN1bShteWRhdGEkZWR1Y2F0aW9uW2lzLmN0cmxdID09IHMsIG5hLnJtID0gVCkgLyBOZwpzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5wYXRpXSA9PSBzLCBuYS5ybSA9IFQpIC8gTmcKc3VtKG15ZGF0YSRlZHVjYXRpb25baXMucmlza10gPT0gcywgbmEucm0gPSBUKSAvIE5nCgpwcm9wLnRlc3QoYyhzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5jdHJsXSA9PSBzLCBuYS5ybSA9IFQpLAogICAgICAgICAgICBzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5wYXRpXSA9PSBzLCBuYS5ybSA9IFQpLAogICAgICAgICAgICBzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5yaXNrXSA9PSBzLCBuYS5ybSA9IFQpKSwKICAgICAgICAgIHJlcChOZywgMykKKQpgYGAKCiMjIEhhbmRlZG5lc3MKYGBge3J9CnN1bW1hcnkobXlkYXRhJGhhbmRlZG5lc3MpCmBgYAoKIyMgQ2xpbmljYWwgZmVhdHVyZXMKCiMjIyBBbnhvdXMgZmVlbGluZ3MKYGBge3J9CnRhcHBseShteWRhdGEkd29ycmllcl9hbnhpb3VzX2ZlZWxpbmdzLCBteWRhdGEkZ3JvdXAsIGZ1bmN0aW9uKHgpIHJvdW5kKHN1bW1hcnkoeCkvTmcsIGRpZ2l0cyA9IDIpKQpgYGAKIyMjIFNlZW4gR1AKYGBge3J9CnRhcHBseShteWRhdGEkc2Vlbl9ncCwgbXlkYXRhJGdyb3VwLCBmdW5jdGlvbih4KSByb3VuZChzdW1tYXJ5KHgpL05nLCBkaWdpdHMgPSAyKSkKYGBgCgojIyMgU2VlbiBQc3ljaGlhdHJpc3QKYGBge3J9CnRhcHBseShteWRhdGEkc2Vlbl9wc3ljaGlhdHJpc3QsIG15ZGF0YSRncm91cCwgZnVuY3Rpb24oeCkgcm91bmQoc3VtbWFyeSh4KS9OZywgZGlnaXRzID0gMikpCmBgYAoKIyMgTGlmZXRpbWUgTWFqb3IgRGVwcmVzc2lvbiBzdGF0dXMKYGBge3J9CnRhcHBseShteWRhdGEkTUQuc3RhdHVzLCBteWRhdGEkZ3JvdXAsIGZ1bmN0aW9uKHgpIHJvdW5kKHN1bW1hcnkoeCkvTmcsIGRpZ2l0cyA9IDIpKQpgYGAKCiMjIEZhbWlseSBoaXN0b3J5IG9mIHNldmVyZSBkZXByZXNzaW9uCmBgYHtyfQp4PWFycmF5KE5BLCBkaW09YygxLDMpKQp4WzEsXT1yb3VuZChjKHN1bShteWRhdGEkbWQuZmFtaWx5W2lzLmN0cmxdKSwgc3VtKG15ZGF0YSRtZC5mYW1pbHlbaXMucGF0aV0pLCBzdW0obXlkYXRhJG1kLmZhbWlseVtpcy5yaXNrXSkpL05nLCBkaWdpdHMgPSAyKQpjb2xuYW1lcyh4KT1jKCJDb250cm9sIiwiUGF0aWVudCIsImF0LXJpc2siKQpwcmludCh4KQpgYGAKCiMjIE1lZGljYWwgaGlzdG9yeQoKIyMjIEV4Y2x1c2lvbnMKYGBge3J9CmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfbmV1cm90cmF1bWEpID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfbmV1cm9kZWdlbikgPT0gMCkKYXNzZXJ0KHN1bShteWRhdGEkaWxsbmVzc19NRCkgPT0gMCkKYXNzZXJ0KHN1bShteWRhdGEkaWxsbmVzc19wYXJraW5zb24pID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfZGVtZW50aWEpID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfaGVhZGluanVyeSkgPT0gMCkKYXNzZXJ0KHN1bShteWRhdGEkaWxsbmVzc19zY2hpem9waHIpID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfYmlwb2xhcikgPT0gMCkKYXNzZXJ0KHN1bShteWRhdGEkaWxsbmVzc19zdHJva2UpID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfZGVteWVsaW4pID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfZ3VpbGxhaW4pID09IDApCmBgYAojIyMgRGVwcmVzc2lvbgpgYGB7cn0KeD1hcnJheShOQSwgZGltPWMoMSwzKSkKeFsxLF09cm91bmQoYyhzdW0obXlkYXRhJGlsbG5lc3NfZGVwcmVzc2lvbltpcy5jdHJsXSksCiAgICAgICAgICAgICAgc3VtKG15ZGF0YSRpbGxuZXNzX2RlcHJlc3Npb25baXMucGF0aV0pLAogICAgICAgICAgICAgIHN1bShteWRhdGEkaWxsbmVzc19kZXByZXNzaW9uW2lzLnJpc2tdKSkvTmcsIGRpZ2l0cyA9IDIpCmNvbG5hbWVzKHgpPWMoIkNvbnRyb2wiLCJQYXRpZW50IiwiYXQtcmlzayIpCnByaW50KHgpCmBgYAoKIyMjIEFueGlldHkKYGBge3J9Cng9YXJyYXkoTkEsIGRpbT1jKDEsMykpCnhbMSxdPXJvdW5kKGMoc3VtKG15ZGF0YSRpbGxuZXNzX2FueGlldHlbaXMuY3RybF0pLAogICAgICAgICAgICAgIHN1bShteWRhdGEkaWxsbmVzc19hbnhpZXR5W2lzLnBhdGldKSwKICAgICAgICAgICAgICBzdW0obXlkYXRhJGlsbG5lc3NfYW54aWV0eVtpcy5yaXNrXSkpL05nLCBkaWdpdHMgPSAyKQpjb2xuYW1lcyh4KT1jKCJDb250cm9sIiwiUGF0aWVudCIsImF0LXJpc2siKQpwcmludCh4KQpgYGAKCiMjIEdlbmVyYWwgaGVhbHRoCgojIyMgT3ZlcmFsbCBoZWFsdGgKYGBge3J9CnRhcHBseShteWRhdGEkb3ZlcmFsbF9oZWFsdGgsIG15ZGF0YSRncm91cCwgZnVuY3Rpb24oeCkgcm91bmQoc3VtbWFyeSh4KS9OZywgZGlnaXRzID0gMikpCmBgYAoKIyMjIExvbmdzdGFuZGluZyBpbGxuZXNzCmBgYHtyfQp0YXBwbHkobXlkYXRhJGxvbmdzdGFuZGluZ19pbGxuZXNzLCBteWRhdGEkZ3JvdXAsIGZ1bmN0aW9uKHgpIHJvdW5kKHN1bW1hcnkoeCkvTmcsIGRpZ2l0cyA9IDIpKQpgYGAKCiMjIFZhcmlhYmxlIG5hbWVzCmBgYHtyfQpuYW1lcyhteWRhdGEpCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVUtCQi1NSC1EZW1vZ3JhcGhpY3MtMSIKYXV0aG9yOiAiU2ltb24gU2Nod2FiIgpkYXRlOiAiMjcgSnVuZSAyMDE4IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIyBMaWJyYXJpZXMKYGBge3IgbWVzc2FnZT1GQUxTRX0KbGlicmFyeShnZ3Bsb3QyKQpsaWJyYXJ5KGNvd3Bsb3QpCmxpYnJhcnkodGVzdGl0KQpgYGAKCiMjIFZhcmlhYmxlcwpgYGB7cn0KUEFUSF9IT01FID0gJy9ob21lL3NpbW9uJwpQQVRIX1BST0ogPSBmaWxlLnBhdGgoUEFUSF9IT01FLCAnRGF0YScsICdVS0JCLU1IJykgIyBQcm9qZWN0IHBhdGgKUEFUSF9SRVNVTFRTID0gZmlsZS5wYXRoKFBBVEhfUFJPSiwgJ3Jlc3VsdHMnKQpQQVRIX0ZJR1MgPSBmaWxlLnBhdGgoUEFUSF9QUk9KLCAnZmlndXJlcycpClBBVEhfVUtCQiA9IGZpbGUucGF0aChQQVRIX0hPTUUsICdEcml2ZScsICd1a2Jpb2JhbmsnKQpgYGAKCiMjIExvYWQgc3ViamVjdCBpbmZvCmBgYHtyfQpsb2FkKGZpbGUgPSBmaWxlLnBhdGgoUEFUSF9VS0JCLCAnVUtCQi1NSC5SRGF0YScpKQpteWRhdGEgPSBNWVVLQkIuMS5tYXRjaGVkCk49bnJvdyhteWRhdGEpCk5nPU4vMwoKYXNzZXJ0KHN1bShteWRhdGEkaGFzZk1SSSkgPT0gTikKCmlzLmN0cmwgPSBteWRhdGEkaXMuY29udHJvbAppcy5wYXRpID0gbXlkYXRhJGlzLk1ECmlzLnJpc2sgPSBteWRhdGEkaXMucmlzawoKIyBjcmVhdGUgZ3JvdXAgdmFyaWFibGUKZ3JvdXAgPSByZXAoTkEsIE4pCmdyb3VwW2lzLmN0cmxdID0gImNvbnRyb2wiCmdyb3VwW2lzLnBhdGldID0gInBhdGllbnQiCmdyb3VwW2lzLnJpc2tdID0gInJpc2siCmdyb3VwID0gYXMuZmFjdG9yKGdyb3VwKQpteWRhdGEkZ3JvdXAgPSBncm91cApgYGAKCiMjIEdyb3VwIHNpemVzCmBgYHtyfQpzcHJpbnRmKCdUb3RhbCBOPSVkJyxOKQpzdW1tYXJ5KG15ZGF0YSRncm91cCkKYGBgCgojIyBHZW5kZXIKYGBge3J9CnJvdW5kKHN1bW1hcnkobXlkYXRhJHNleFtpcy5jdHJsXSkvTmcsIGRpZ2l0cyA9IDIpCnJvdW5kKHN1bW1hcnkobXlkYXRhJHNleFtpcy5wYXRpXSkvTmcsIGRpZ2l0cyA9IDIpCnJvdW5kKHN1bW1hcnkobXlkYXRhJHNleFtpcy5yaXNrXSkvTmcsIGRpZ2l0cyA9IDIpCgpwcm9wLnRlc3QoYyhzdW1tYXJ5KG15ZGF0YSRzZXhbaXMuY3RybF0pWzFdLAogICAgICAgICAgICBzdW1tYXJ5KG15ZGF0YSRzZXhbaXMucGF0aV0pWzFdLAogICAgICAgICAgICBzdW1tYXJ5KG15ZGF0YSRzZXhbaXMucmlza10pWzFdKSwKICAgICAgICAgIHJlcChOZywgMykpCmBgYAoKIyMgQWdlCmBgYHtyfQp0YWJsZT1hcnJheShOQSwgZGltPWMoMywyKSkKCnRhYmxlWzEsMV0gPSBtZWFuKG15ZGF0YSRhZ2VbaXMuY3RybF0pOyB0YWJsZVsxLDJdID0gc2QobXlkYXRhJGFnZVtpcy5jdHJsXSk7CnRhYmxlWzIsMV0gPSBtZWFuKG15ZGF0YSRhZ2VbaXMucGF0aV0pOyB0YWJsZVsyLDJdID0gc2QobXlkYXRhJGFnZVtpcy5wYXRpXSk7CnRhYmxlWzMsMV0gPSBtZWFuKG15ZGF0YSRhZ2VbaXMucmlza10pOyB0YWJsZVszLDJdID0gc2QobXlkYXRhJGFnZVtpcy5yaXNrXSk7CnJvd25hbWVzKHRhYmxlKSA9IGMoImNvbnRyb2xzIiwgInBhdGllbnRzIiwgImF0LXJpc2siKQpjb2xuYW1lcyh0YWJsZSkgPSBjKCJtZWFuIiwgInNkIikKcHJpbnQodGFibGUpCgpzdW1tYXJ5KGFvdihhZ2UgfiBncm91cCwgZGF0YSA9IG15ZGF0YSkpCmBgYAoKIyMgRXRobmljIGJhY2tncm91bmQKYGBge3J9CnJvdW5kKHN1bW1hcnkobXlkYXRhJGV0aG5pYy5iYWNrZ3JvdW5kW2lzLmN0cmxdKS9OZywgZGlnaXRzID0gMikKcm91bmQoc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucGF0aV0pL05nLCBkaWdpdHMgPSAyKQpyb3VuZChzdW1tYXJ5KG15ZGF0YSRldGhuaWMuYmFja2dyb3VuZFtpcy5yaXNrXSkvTmcsIGRpZ2l0cyA9IDIpCgpwcm9wLnRlc3QoYyhzdW1tYXJ5KG15ZGF0YSRldGhuaWMuYmFja2dyb3VuZFtpcy5jdHJsXSlbOF0sCiAgICAgICAgICAgIHN1bW1hcnkobXlkYXRhJGV0aG5pYy5iYWNrZ3JvdW5kW2lzLnBhdGldKVs4XSwKICAgICAgICAgICAgc3VtbWFyeShteWRhdGEkZXRobmljLmJhY2tncm91bmRbaXMucmlza10pWzhdKSwKICAgICAgICAgIHJlcChOZywgMykpCmBgYAoKIyMgRWR1Y2F0aW9uCmBgYHtyfQpzID0gIkNvbGxlZ2Ugb3IgVW5pdmVyc2l0eSBkZWdyZWUiCnN1bShteWRhdGEkZWR1Y2F0aW9uW2lzLmN0cmxdID09IHMsIG5hLnJtID0gVCkgLyBOZwpzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5wYXRpXSA9PSBzLCBuYS5ybSA9IFQpIC8gTmcKc3VtKG15ZGF0YSRlZHVjYXRpb25baXMucmlza10gPT0gcywgbmEucm0gPSBUKSAvIE5nCgpwcm9wLnRlc3QoYyhzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5jdHJsXSA9PSBzLCBuYS5ybSA9IFQpLAogICAgICAgICAgICBzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5wYXRpXSA9PSBzLCBuYS5ybSA9IFQpLAogICAgICAgICAgICBzdW0obXlkYXRhJGVkdWNhdGlvbltpcy5yaXNrXSA9PSBzLCBuYS5ybSA9IFQpKSwKICAgICAgICAgIHJlcChOZywgMykKKQpgYGAKCiMjIEhhbmRlZG5lc3MKYGBge3J9CnN1bW1hcnkobXlkYXRhJGhhbmRlZG5lc3MpCmBgYAoKIyMgUUMgcnMtZk1SSSBtb3Rpb24KYGBge3J9CnRhcHBseShteWRhdGEkbW90aW9uLCBteWRhdGEkZ3JvdXAsIG1lYW4pCgpzdW1tYXJ5KGFvdihtb3Rpb24gfiBncm91cCwgZGF0YSA9IG15ZGF0YSkpCmBgYAoKIyMgQ2xpbmljYWwgZmVhdHVyZXMKCiMjIyBBbnhvdXMgZmVlbGluZ3MKYGBge3J9CnRhcHBseShteWRhdGEkd29ycmllcl9hbnhpb3VzX2ZlZWxpbmdzLCBteWRhdGEkZ3JvdXAsIGZ1bmN0aW9uKHgpIHJvdW5kKHN1bW1hcnkoeCkvTmcsIGRpZ2l0cyA9IDIpKQpgYGAKIyMjIFNlZW4gR1AKYGBge3J9CnRhcHBseShteWRhdGEkc2Vlbl9ncCwgbXlkYXRhJGdyb3VwLCBmdW5jdGlvbih4KSByb3VuZChzdW1tYXJ5KHgpL05nLCBkaWdpdHMgPSAyKSkKYGBgCgojIyMgU2VlbiBQc3ljaGlhdHJpc3QKYGBge3J9CnRhcHBseShteWRhdGEkc2Vlbl9wc3ljaGlhdHJpc3QsIG15ZGF0YSRncm91cCwgZnVuY3Rpb24oeCkgcm91bmQoc3VtbWFyeSh4KS9OZywgZGlnaXRzID0gMikpCmBgYAoKIyMgTGlmZXRpbWUgTWFqb3IgRGVwcmVzc2lvbiBzdGF0dXMKYGBge3J9CnRhcHBseShteWRhdGEkTUQuc3RhdHVzLCBteWRhdGEkZ3JvdXAsIGZ1bmN0aW9uKHgpIHJvdW5kKHN1bW1hcnkoeCkvTmcsIGRpZ2l0cyA9IDIpKQpgYGAKCiMjIEZhbWlseSBoaXN0b3J5IG9mIHNldmVyZSBkZXByZXNzaW9uCmBgYHtyfQp4PWFycmF5KE5BLCBkaW09YygxLDMpKQp4WzEsXT1yb3VuZChjKHN1bShteWRhdGEkbWQuZmFtaWx5W2lzLmN0cmxdKSwgc3VtKG15ZGF0YSRtZC5mYW1pbHlbaXMucGF0aV0pLCBzdW0obXlkYXRhJG1kLmZhbWlseVtpcy5yaXNrXSkpL05nLCBkaWdpdHMgPSAyKQpjb2xuYW1lcyh4KT1jKCJDb250cm9sIiwiUGF0aWVudCIsImF0LXJpc2siKQpwcmludCh4KQpgYGAKCiMjIE1lZGljYWwgaGlzdG9yeQoKIyMjIEV4Y2x1c2lvbnMKYGBge3J9CmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfbmV1cm90cmF1bWEpID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfbmV1cm9kZWdlbikgPT0gMCkKYXNzZXJ0KHN1bShteWRhdGEkaWxsbmVzc19NRCkgPT0gMCkKYXNzZXJ0KHN1bShteWRhdGEkaWxsbmVzc19wYXJraW5zb24pID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfZGVtZW50aWEpID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfaGVhZGluanVyeSkgPT0gMCkKYXNzZXJ0KHN1bShteWRhdGEkaWxsbmVzc19zY2hpem9waHIpID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfYmlwb2xhcikgPT0gMCkKYXNzZXJ0KHN1bShteWRhdGEkaWxsbmVzc19zdHJva2UpID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfZGVteWVsaW4pID09IDApCmFzc2VydChzdW0obXlkYXRhJGlsbG5lc3NfZ3VpbGxhaW4pID09IDApCmBgYAojIyMgRGVwcmVzc2lvbgpgYGB7cn0KeD1hcnJheShOQSwgZGltPWMoMSwzKSkKeFsxLF09cm91bmQoYyhzdW0obXlkYXRhJGlsbG5lc3NfZGVwcmVzc2lvbltpcy5jdHJsXSksCiAgICAgICAgICAgICAgc3VtKG15ZGF0YSRpbGxuZXNzX2RlcHJlc3Npb25baXMucGF0aV0pLAogICAgICAgICAgICAgIHN1bShteWRhdGEkaWxsbmVzc19kZXByZXNzaW9uW2lzLnJpc2tdKSkvTmcsIGRpZ2l0cyA9IDIpCmNvbG5hbWVzKHgpPWMoIkNvbnRyb2wiLCJQYXRpZW50IiwiYXQtcmlzayIpCnByaW50KHgpCmBgYAoKIyMjIEFueGlldHkKYGBge3J9Cng9YXJyYXkoTkEsIGRpbT1jKDEsMykpCnhbMSxdPXJvdW5kKGMoc3VtKG15ZGF0YSRpbGxuZXNzX2FueGlldHlbaXMuY3RybF0pLAogICAgICAgICAgICAgIHN1bShteWRhdGEkaWxsbmVzc19hbnhpZXR5W2lzLnBhdGldKSwKICAgICAgICAgICAgICBzdW0obXlkYXRhJGlsbG5lc3NfYW54aWV0eVtpcy5yaXNrXSkpL05nLCBkaWdpdHMgPSAyKQpjb2xuYW1lcyh4KT1jKCJDb250cm9sIiwiUGF0aWVudCIsImF0LXJpc2siKQpwcmludCh4KQpgYGAKCiMjIEdlbmVyYWwgaGVhbHRoCgojIyMgT3ZlcmFsbCBoZWFsdGgKYGBge3J9CnRhcHBseShteWRhdGEkb3ZlcmFsbF9oZWFsdGgsIG15ZGF0YSRncm91cCwgZnVuY3Rpb24oeCkgcm91bmQoc3VtbWFyeSh4KS9OZywgZGlnaXRzID0gMikpCmBgYAoKIyMjIExvbmdzdGFuZGluZyBpbGxuZXNzCmBgYHtyfQp0YXBwbHkobXlkYXRhJGxvbmdzdGFuZGluZ19pbGxuZXNzLCBteWRhdGEkZ3JvdXAsIGZ1bmN0aW9uKHgpIHJvdW5kKHN1bW1hcnkoeCkvTmcsIGRpZ2l0cyA9IDIpKQpgYGAKCiMjIFZhcmlhYmxlIG5hbWVzCmBgYHtyfQpuYW1lcyhteWRhdGEpCmBgYAoK</div>
 
 
 

@@ -1,7 +1,7 @@
 ---
 title: "UKBB-MH-Demographics-1"
 author: "Simon Schwab"
-date: "21 June 2018"
+date: "27 June 2018"
 output: html_notebook
 ---
 
@@ -104,6 +104,13 @@ prop.test(c(sum(mydata$education[is.ctrl] == s, na.rm = T),
 ## Handedness
 ```{r}
 summary(mydata$handedness)
+```
+
+## QC rs-fMRI motion
+```{r}
+tapply(mydata$motion, mydata$group, mean)
+
+summary(aov(motion ~ group, data = mydata))
 ```
 
 ## Clinical features
