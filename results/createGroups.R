@@ -521,8 +521,14 @@ healthy[is.na(healthy)] = FALSE
 rightHanded = (handedness == "Right-handed")
 rightHanded[is.na(rightHanded)] = FALSE
 
+# individuals with fMRI also have QC motion data
+# 87.9% have fMRI that passed QC
+# sum(hasfMRI & is.na(motion))
+# sum(hasfMRI & !is.na(motion))
+
 # matching variables age, sex and education cannot contain NaN's
 # sum(missing)/N*100 3.2%
+# we don't need to filter for motion here, missing is 1:1 with hasfMRIB
 missing = is.na(sex) | is.na(age) | is.na(education) | is.na(ethnic.background)
 
 # all individals with fMRI have age recorded:
@@ -541,6 +547,7 @@ is.control = !missing & hasfMRI & rightHanded & !neuro & !MD.all & !md.family &
 MYUKBB$neuroExclusion=neuro
 MYUKBB$isHealthy=healthy
 MYUKBB$rightHanded=rightHanded
+
 MYUKBB$is.MD=is.MD
 MYUKBB$is.risk=is.risk
 MYUKBB$is.control=is.control
@@ -567,16 +574,20 @@ n.1 = sum(MYUKBB.1$is.risk)
 n.2 = sum(MYUKBB.2$is.risk)
 
 # select subset of variables relevant for matching
-MYUKBB.1.sub =  MYUKBB.1[,c(1:5,69:71)]
-MYUKBB.2.sub =  MYUKBB.2[,c(1:5,69:71)]
+varNames = names(MYUKBB)
+sel=c(1:5,64,69:72)
+varNames[sel]
+
+MYUKBB.1.sub =  MYUKBB.1[,sel]
+MYUKBB.2.sub =  MYUKBB.2[,sel]
 
 # matching md and controls to at-risk group
 MYUKBB.1.sub.md  = subset(MYUKBB.1.sub, subset = MYUKBB.1.sub$is.risk | MYUKBB.1.sub$is.MD)
 MYUKBB.1.sub.ctr = subset(MYUKBB.1.sub, subset = MYUKBB.1.sub$is.risk | MYUKBB.1.sub$is.control)
 
-match.md.1  = matchit(is.risk ~ age + sex + education + ethnic.background,
+match.md.1  = matchit(is.risk ~ age + sex + education + ethnic.background + motion,
                       data = MYUKBB.1.sub.md,  method="nearest", ratio=1)
-match.ctr.1 = matchit(is.risk ~ age + sex + education + ethnic.background,
+match.ctr.1 = matchit(is.risk ~ age + sex + education + ethnic.background + motion,
                       data = MYUKBB.1.sub.ctr, method="nearest", ratio=1)
 
 eid.1.matched = c(as.character(MYUKBB.1$eid[MYUKBB.1$is.risk]),
@@ -590,9 +601,9 @@ MYUKBB.1.matched = subset(MYUKBB, subset=idx.1.matched)
 MYUKBB.2.sub.md  = subset(MYUKBB.2.sub, subset = MYUKBB.2.sub$is.risk | MYUKBB.2.sub$is.MD)
 MYUKBB.2.sub.ctr = subset(MYUKBB.2.sub, subset = MYUKBB.2.sub$is.risk | MYUKBB.2.sub$is.control)
 
-match.md.2  = matchit(is.risk ~ age + sex + education + ethnic.background,
+match.md.2  = matchit(is.risk ~ age + sex + education + ethnic.background + motion,
                       data = MYUKBB.2.sub.md,  method="nearest", ratio=1)
-match.ctr.2 = matchit(is.risk ~ age + sex + education + ethnic.background,
+match.ctr.2 = matchit(is.risk ~ age + sex + education + ethnic.background + motion,
                       data = MYUKBB.2.sub.ctr, method="nearest", ratio=1)
 
 eid.2.matched = c(as.character(MYUKBB.2$eid[MYUKBB.2$is.risk]),
@@ -608,7 +619,7 @@ MYUKBB.2.matched = subset(MYUKBB, subset=idx.2.matched)
 # write(as.character(MYUKBB.1.matched$eid), file=sprintf('~/UKBB-MH/results/subjectsN%d_1.txt', nrow(MYUKBB.1.matched)), ncolumns = 1)
 # write(as.character(MYUKBB.2.matched$eid), file=sprintf('~/UKBB-MH/results/subjectsN%d_2.txt', nrow(MYUKBB.2.matched)), ncolumns = 1)
 
-## Matched samples (we are not using this code, we take the complete healthy sample as controls)
+## Matched samples (we are not using this code, we use matchit instead)
 # For each patient we select a control of the same age and gender
 set.seed(1980)
 selection=rep(NA, nrow(patients))
