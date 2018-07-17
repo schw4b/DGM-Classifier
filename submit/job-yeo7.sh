@@ -17,7 +17,7 @@ PATH_PROJ="${HOME}/UKBB-MH"
 
 SLIST="subjectsN2193_1.txt"
 INFO="yeo7"
-FILE_ATLAS="${PATH_PROJ}/yeo/Yeo2011_7Networks_N1000.split_components.FSL_MNI152_2mm.nii.gz"
+FILE_ATLAS="${PATH_PROJ}/atlas/Yeo2011_7Networks_N1000.split_components.FSL_MNI152_2mm.nii.gz"
 
 PATH_FMRI="/vols/Data/ukbiobank/FMRIB/IMAGING/data3/SubjectsAll"
 FILE_BRAINMASK="${PATH_PROJ}/atlas/brain_mask.nii.gz"
