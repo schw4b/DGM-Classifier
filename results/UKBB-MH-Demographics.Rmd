@@ -1,7 +1,7 @@
 ---
-title: "UKBB-MH-Demographics"
+title: "UKBB-MH-Demographics.1"
 author: "Simon Schwab"
-date: "12 May 2018"
+date: "21 June 2018"
 output: html_notebook
 ---
 
@@ -9,11 +9,11 @@ output: html_notebook
 ```{r message=FALSE}
 library(ggplot2)
 library(cowplot)
+library(testit)
 ```
 
 ## Variables
 ```{r}
-N=135
 PATH_HOME = '/home/simon'
 PATH_PROJ = file.path(PATH_HOME, 'Data', 'UKBB-MH') # Project path
 PATH_RESULTS = file.path(PATH_PROJ, 'results')
@@ -24,42 +24,85 @@ PATH_UKBB = file.path(PATH_HOME, 'Drive', 'ukbiobank')
 ## Load subject info
 ```{r}
 load(file = file.path(PATH_UKBB, 'UKBB-MH.RData'))
-mydata=subset(subjects, subset = subjects$hasfMRI)
-is.ctrl = mydata$group == 'control'
-is.pati = mydata$group == 'patient'
+mydata = MYUKBB.2.matched
+N=nrow(mydata)
+Ng=N/3
 
-ctrl = subset(mydata, subset = is.ctrl)
-pati = subset(mydata, subset = is.pati)
+assert(sum(mydata$hasfMRI) == N)
+
+is.ctrl = mydata$is.control
+is.pati = mydata$is.MD
+is.risk = mydata$is.risk
+
+# create group variable
+group = rep(NA, N)
+group[is.ctrl] = "control"
+group[is.pati] = "patient"
+group[is.risk] = "risk"
+group = as.factor(group)
+mydata$group = group
 ```
 
-
+## Variable names
 ```{r}
-table = array(NA, dim=c(14, 2))
-colnames(table) = c("Controls", "Patients")
-rownames(table) = c("N", "gender (female/male)", "mean age (SD)",
-                    "F40.0", "F40.1", "F40.2", "F40.8", "F40.9",
-                    "F41.0", "F41.1", "F41.2", "F41.3", "F41.8", "F41.9")
+names(mydata)
+```
 
-table[1,] = c(nrow(ctrl), nrow(pati))
-table[2,] = c(sprintf('%d/%d', summary(ctrl$sex)[1], summary(ctrl$sex)[2]),
-             sprintf('%d/%d', summary(pati$sex)[1], summary(pati$sex)[2]))
-table[3,] = c(sprintf('%.1f (%.2f)', mean(ctrl$age2_), sd(ctrl$age2_)),
-             sprintf('%.1f (%.2f)', mean(pati$age2_), sd(pati$age2_)))
+## Group sizes
+```{r}
+summary(mydata$group)
+```
 
-table[4,] = c(sum(ctrl$F400), sum(pati$F400))
-table[5,] = c(sum(ctrl$F401), sum(pati$F401))
-table[6,] = c(sum(ctrl$F402), sum(pati$F402))
-table[7,] = c(sum(ctrl$F408), sum(pati$F408))
-table[8,] = c(sum(ctrl$F409), sum(pati$F409))
+## Gender
+```{r}
+round(summary(mydata$sex[is.ctrl])/Ng, digits = 2)
+round(summary(mydata$sex[is.pati])/Ng, digits = 2)
+round(summary(mydata$sex[is.risk])/Ng, digits = 2)
 
-table[9,] = c(sum(ctrl$F410), sum(pati$F410))
-table[10,] = c(sum(ctrl$F411), sum(pati$F411))
-table[11,] = c(sum(ctrl$F412), sum(pati$F412))
-table[12,] = c(sum(ctrl$F413), sum(pati$F413))
-table[13,] = c(sum(ctrl$F418), sum(pati$F418))
-table[14,] = c(sum(ctrl$F419), sum(pati$F419))
+prop.test(c(summary(mydata$sex[is.ctrl])[1],
+            summary(mydata$sex[is.pati])[1],
+            summary(mydata$sex[is.risk])[1]),
+          rep(Ng, 3))
+```
 
+## Age
+```{r}
+table=array(NA, dim=c(3,2))
+
+table[1,1] = mean(mydata$age[is.ctrl]); table[1,2] = sd(mydata$age[is.ctrl]);
+table[2,1] = mean(mydata$age[is.pati]); table[2,2] = sd(mydata$age[is.pati]);
+table[3,1] = mean(mydata$age[is.risk]); table[3,2] = sd(mydata$age[is.risk]);
+rownames(table) = c("controls", "patients", "at-risk")
+colnames(table) = c("mean", "sd")
 print(table)
+
+summary(aov(age ~ group, data = mydata))
+```
+
+## Ethnic background
+```{r}
+round(summary(mydata$ethnic.background[is.ctrl])/Ng, digits = 2)
+round(summary(mydata$ethnic.background[is.pati])/Ng, digits = 2)
+round(summary(mydata$ethnic.background[is.risk])/Ng, digits = 2)
+
+prop.test(c(summary(mydata$ethnic.background[is.ctrl])[8],
+            summary(mydata$ethnic.background[is.pati])[8],
+            summary(mydata$ethnic.background[is.risk])[8]),
+          rep(Ng, 3))
+```
+
+## Education
+```{r}
+s = "College or University degree"
+sum(mydata$education[is.ctrl] == s, na.rm = T) / Ng
+sum(mydata$education[is.pati] == s, na.rm = T) / Ng
+sum(mydata$education[is.risk] == s, na.rm = T) / Ng
+
+prop.test(c(sum(mydata$education[is.ctrl] == s, na.rm = T),
+            sum(mydata$education[is.pati] == s, na.rm = T),
+            sum(mydata$education[is.risk] == s, na.rm = T)),
+          rep(Ng, 3)
+)
 ```
 
 
