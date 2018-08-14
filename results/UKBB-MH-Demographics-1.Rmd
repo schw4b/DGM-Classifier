@@ -1,7 +1,7 @@
 ---
 title: "UKBB-MH-Demographics-1"
 author: "Simon Schwab"
-date: "27 June 2018"
+date: "14 Aug 2018"
 output: html_notebook
 ---
 
@@ -14,7 +14,7 @@ library(testit)
 
 ## Variables
 ```{r}
-PATH_HOME = '/home/simon'
+PATH_HOME = Sys.getenv("HOME")
 PATH_PROJ = file.path(PATH_HOME, 'Data', 'UKBB-MH') # Project path
 PATH_RESULTS = file.path(PATH_PROJ, 'results')
 PATH_FIGS = file.path(PATH_PROJ, 'figures')
