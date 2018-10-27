@@ -18,11 +18,11 @@ UK Biobank: Linking directed dynamic brain networks to mental health
 ### Prepare group samples of interest
 
 * `createGroups.R` fixes some duplicated variable names and saves data in `ukbiobank.varfix.RData`, the final data container. Checks rs-fMRI data availability `hasfMRI.RData` and concatenates the ICD diagnoses into a list `ICD.RData`. Creates a file `MYUKBB.RData`, this is the final database to sample the groups from with all relevant demographics, diagnoses, and mental variables, N=15,133.
-Stores final groups with all relevant fields in `UKBB-MH.RData` and creates a list of EIDs `subjectsNXXXX.txt`. `fetchICD.R` SGE job that fetches all the ICD-10 diagnoses and writes a file per subject, however, I'm not focusing on ICD-10 diagnose to sample the cohorts.
+Stores final groups with all relevant fields in `UKBB-MH.RData` and creates a list of EIDs `subjectsNXXXX.txt`. `fetchICD.R` SGE job that fetches all the ICD-10 diagnoses and writes a file per subject, however, I'm not focusing on ICD-10 to sample the cohorts.
 
-* `createGroups.R` creates the final patient cohort according to ifetime Major Depression status (Smith et al.; 2013, Plos One) and additional exclusion criteria. Creates a age, gender, educaton, ethnicity, and motion-artefact matched control sample. Also checks, if subjects have a fMRI dataset (passed quality control).
+* `createGroups.R` creates the final patient cohort according to ifetime Major Depression status (Smith et al.; 2013, Plos One) and additional exclusion criteria. Creates a age, gender, educaton, ethnicity, and motion-artefact matched control sample. Also checks, if subjects have a fMRI dataset (i.e., passed quality control).
 
-* Demographics of the groups are analysed in `UKBB-MH-Demographics-1.Rmd`, and of an independent sample in `UKBB-MH-Demographics-2.Rmd`
+* Demographics of the groups are analysed in `UKBB-MH-Demographics.Rmd`.
 
 * `selectNodes.R` generates time series data file (one per subject) for DGM analysis.
 
