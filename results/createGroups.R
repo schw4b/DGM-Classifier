@@ -56,7 +56,6 @@ load(file.path(PATH, 'ukbiobank.varfix.RData'))
 N=nrow(my_ukb_data)
 PATH_FMRI='/vols/Data/ukbiobank/FMRIB/IMAGING/data3/SubjectsAll'
 
-## check rs fMRI
 hasfMRI = rep(FALSE, N)
 for (i in 1:N) {
   hasfMRI[i] = file.exists(file.path(PATH_FMRI, my_ukb_data$eid[i], 'fMRI/rfMRI.ica/reg_standard/filtered_func_data_clean.nii.gz'))
