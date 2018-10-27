@@ -1,0 +1,190 @@
+---
+title: "UKBB-MH-Demographics"
+author: "Simon Schwab"
+date: "07 Sept 2018"
+output: html_notebook
+---
+
+## Load libraries
+```{r message=FALSE}
+library(ggplot2)
+library(cowplot)
+library(testit)
+library(reporttools)
+```
+
+## Variables
+```{r}
+PATH_HOME = Sys.getenv("HOME")
+PATH_PROJ = file.path(PATH_HOME, 'Data', 'UKBB-MH') # Project path
+PATH_RESULTS = file.path(PATH_PROJ, 'results')
+PATH_FIGS = file.path(PATH_PROJ, 'figures')
+PATH_UKBB = file.path(PATH_HOME, 'Drive', 'ukbiobank')
+```
+
+## Load subject information
+```{r}
+load(file = file.path(PATH_UKBB, 'UKBB-MH.RData'))
+
+# create group variable
+MYUKBB.1.matched$group = rep(NA, nrow(MYUKBB.1.matched))
+MYUKBB.1.matched$group[MYUKBB.1.matched$is.control] = "control"
+MYUKBB.1.matched$group[MYUKBB.1.matched$is.MD]      = "patient"
+MYUKBB.1.matched$group[MYUKBB.1.matched$is.risk]    = "at-risk"
+MYUKBB.1.matched$group = factor(MYUKBB.1.matched$group, levels = c("control", "patient", "at-risk"))
+
+# relevel
+MYUKBB.1.matched$MD.status = factor(MYUKBB.1.matched$MD.status, levels = c("none", "single", "moderate", "severe"))
+
+# create group variable
+MYUKBB.2.matched$group = rep(NA, nrow(MYUKBB.2.matched))
+MYUKBB.2.matched$group[MYUKBB.2.matched$is.control] = "control"
+MYUKBB.2.matched$group[MYUKBB.2.matched$is.MD]      = "patient"
+MYUKBB.2.matched$group[MYUKBB.2.matched$is.risk]    = "at-risk"
+MYUKBB.2.matched$group = factor(MYUKBB.2.matched$group, levels = c("control", "patient", "at-risk"))
+
+# relevel
+MYUKBB.2.matched$MD.status = factor(MYUKBB.2.matched$MD.status, levels = c("none", "single", "moderate", "severe"))
+```
+
+## Helper functions
+```{r include=FALSE}
+mean.sd <- function(x, dec=1) sprintf(sprintf("%%.%df (%%.%df)", dec, dec),
+                                      mean(x, na.rm = T), sd(x, na.rm = T))
+
+median.iqr <- function(x, dec=1) sprintf(sprintf("%%.%df (%%.%df)", dec, dec),
+                                         median(x, na.rm = T), IQR(x, na.rm = T))
+# Table formatting function
+createTable = function(mydata, Ng) {
+  
+  # create data frame that can be extended with demographic variables
+  tab = data.frame(Sample.size=c(sprintf('n = %d', summary(mydata$group)), ""))
+  
+  # Demographic variables
+  # perform test and show mean group characteristics
+  stat = prop.test(tapply(mydata$sex == "Female", mydata$group, sum), rep(Ng, 3))
+  tab$female = c(sprintf('%s%%', round(tapply(mydata$sex == "Female", mydata$group, sum)/Ng, digits = 2)*100), 
+                 sprintf('%s', formatPval(stat$p.value)))
+  
+  stat = summary(aov(age ~ group, data = mydata))
+  tab$Mean.age = c(tapply(mydata$age, mydata$group, mean.sd),
+                   sprintf('%s', formatPval(stat[[1]][1,]$`Pr(>F)`)))
+  
+  stat = prop.test(tapply(mydata$ethnic.background == "white", mydata$group, sum), rep(Ng, 3))
+  tab$Ethnic.background.is.white = 
+    c(sprintf('%i%%', round(tapply(mydata$ethnic.background == "white", mydata$group, sum)/Ng*100)),
+      sprintf('%s', formatPval(stat$p.value)))
+  
+  s = "College or University degree"
+  stat = prop.test(tapply(mydata$education == s, mydata$group, sum), rep(Ng, 3))
+  tab$College.or.university.degree = c(sprintf('%i%%', round(tapply(mydata$education == s, mydata$group, sum)/Ng*100)), 
+                                       sprintf('%s', formatPval(stat$p.value)))
+  
+  stat = summary(aov(motion ~ group, data = mydata))
+  tab$QC.motion = c(tapply(mydata$motion, mydata$group, mean.sd, 2),
+                    sprintf('%s', formatPval(stat[[1]][1,]$`Pr(>F)`)))
+  
+  # Clinical variables
+  s = "Yes"
+  stat = prop.test(tapply(mydata$worrier_anxious_feelings== s, mydata$group, sum), rep(Ng, 3))
+  tab$Anxious.feelings = c(sprintf('%i%%', round(tapply(mydata$worrier_anxious_feelings == s, mydata$group, sum)/Ng*100)), 
+                           sprintf('%s', formatPval(stat$p.value)))
+  
+  s = "Yes"
+  stat = prop.test(tapply(mydata$seen_gp == s, mydata$group, sum), rep(Ng, 3))
+  tab$Seen.GP = c(sprintf('%i%%', round(tapply(mydata$seen_gp == s, mydata$group, sum)/Ng*100)), 
+                  sprintf('%s', formatPval(stat$p.value)))
+  
+  s = "Yes"
+  stat = prop.test(tapply(mydata$seen_psychiatrist == s, mydata$group, sum), rep(Ng, 3))
+  tab$Seen.psychiatrist = c(sprintf('%i%%', round(tapply(mydata$seen_psychiatrist == s, mydata$group, sum)/Ng*100)), 
+                            sprintf('%s', formatPval(stat$p.value)))
+  
+  s = "Yes"
+  stat = prop.test(tapply(mydata$md.family, mydata$group, sum), rep(Ng, 3))
+  tab$Familiy.history.of.MD = c(sprintf('%i%%', round(tapply(mydata$md.family, mydata$group, sum)/Ng*100)), 
+                                sprintf('%s', formatPval(stat$p.value)))
+  
+  # Medical history
+  stat = prop.test(tapply(mydata$illness_depression, mydata$group, sum), rep(Ng, 3))
+  tab$History.of.depression = c(sprintf('%i%%', round(tapply(mydata$illness_depression, mydata$group, sum)/Ng*100)), 
+                                sprintf('%s', formatPval(stat$p.value)))
+  
+  stat = prop.test(tapply(mydata$illness_anxiety, mydata$group, sum), rep(Ng, 3))
+  tab$History.of.anxiety = c(sprintf('%i%%', round(tapply(mydata$illness_anxiety, mydata$group, sum)/Ng*100)), 
+                             sprintf('%s', formatPval(stat$p.value)))
+  
+  # Excludions
+  assert(sum(mydata$illness_neurotrauma) == 0)
+  assert(sum(mydata$illness_neurodegen) == 0)
+  assert(sum(mydata$illness_MD) == 0)
+  assert(sum(mydata$illness_parkinson) == 0)
+  assert(sum(mydata$illness_dementia) == 0)
+  assert(sum(mydata$illness_headinjury) == 0)
+  assert(sum(mydata$illness_schizophr) == 0)
+  assert(sum(mydata$illness_bipolar) == 0)
+  assert(sum(mydata$illness_stroke) == 0)
+  assert(sum(mydata$illness_demyelin) == 0)
+  assert(sum(mydata$illness_guillain) == 0)
+  
+  # general health
+  s = c("Excellent", "Good")
+  stat = prop.test(tapply(match(mydata$overall_health, s, nomatch = 0) > 0, mydata$group, sum), rep(Ng, 3))
+  tab$Overall.health.excellent.good = c(sprintf('%i%%', round(tapply(match(mydata$overall_health, s, nomatch = 0) > 0,
+                                                                     mydata$group, sum)/Ng*100)), 
+                                        sprintf('%s', formatPval(stat$p.value)))
+  
+  s = "Fair"
+  stat = prop.test(tapply(mydata$overall_health== s, mydata$group, sum), rep(Ng, 3))
+  tab$Overall.health.fair = c(sprintf('%i%%', round(tapply(mydata$overall_health == s, mydata$group, sum)/Ng*100)), "")
+  
+  s = "Poor"
+  stat = prop.test(tapply(mydata$overall_health== s, mydata$group, sum), rep(Ng, 3))
+  tab$Overall.health.poor = c(sprintf('%i%%', round(tapply(mydata$overall_health == s, mydata$group, sum)/Ng*100)), "")
+  
+  s = "Yes"
+  stat = prop.test(tapply(mydata$longstanding_illness== s, mydata$group, sum), rep(Ng, 3))
+  tab$Longlasting.illness = c(sprintf('%i%%', round(tapply(mydata$longstanding_illness == s, mydata$group, sum)/Ng*100)),
+                              sprintf('%s', formatPval(stat$p.value)))
+  
+  rownames(tab)=c("controls", "patients", "at-risk", "p-vlaue (H0: no difference)")
+  return(t(tab))
+}
+```
+
+## Sample 1
+
+### Table
+```{r}
+kable(createTable(mydata=MYUKBB.1.matched, Ng=nrow(MYUKBB.1.matched)/3), format = 'markdown')
+```
+
+### Lifetime Major Depression status
+```{r}
+tab = tapply(MYUKBB.1.matched$MD.status, 
+             MYUKBB.1.matched$group, function(x) sprintf('%i%%', round(summary(x)/(nrow(MYUKBB.1.matched)/3)*100)))
+out = rbind(tab$control, tab$patient, tab$`at-risk`)
+rownames(out) = c("control", "patient", "risk")
+colnames(out) = c("none", "single", "moderate", "severe")
+kable(out, format = "markdown")
+```
+
+## Sample 2
+
+### Table
+```{r}
+kable(createTable(mydata=MYUKBB.2.matched, Ng=nrow(MYUKBB.2.matched)/3), format = 'markdown')
+```
+
+### Lifetime Major Depression status
+```{r}
+tab = tapply(MYUKBB.2.matched$MD.status, 
+             MYUKBB.2.matched$group, function(x) sprintf('%i%%', round(summary(x)/(nrow(MYUKBB.2.matched)/3)*100)))
+out = rbind(tab$control, tab$patient, tab$`at-risk`)
+rownames(out) = c("control", "patient", "risk")
+colnames(out) = c("none", "single", "moderate", "severe")
+kable(out, format = "markdown")
+```
+
+
+
